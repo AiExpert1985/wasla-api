@@ -22,12 +22,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function upload_data(){
   fetch('/test')
-      .then(function (response) {
-          return response.json();
-      }).then(function (text) {
-          console.log('GET response:');
-          console.log(text.greeting);
-      });
+        .then(response => response.json())
+        .then(text => console.log(text.greeting))
 }
 
 //function upload_excel_files(url){
