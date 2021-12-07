@@ -31,19 +31,17 @@ document.querySelector('#students').addEventListener("change", (event) =>{
 
 document.querySelector('#post').addEventListener("click", () => {
     let api_key = "ksdjf34234a23423"
-//    let data = {"drivers": drivers,
-//                "students": students,
-//                "consider_gates": gates,
-//                "api_key": api_key,
-//    };
-    const formData = new FormData();
-    formData.append('drivers', drivers);
-    formData.append('students', students);
-    formData.append('consider_gates', gates)
-    formData.append('api_key', api_key)
+    let data = {"drivers": drivers,
+                "students": students,
+                "consider_gates": gates,
+                "api_key": api_key,
+    };
     fetch('/algorithm', {
       method: 'POST',
-      body: formData,
+      headers: {
+        'Content-Type': "application/json; charset=UTF-8"
+      },
+      body: JSON.stringify(data),
     })
     .then(response => response.json())
     .then(result => console.log('Success:', result))

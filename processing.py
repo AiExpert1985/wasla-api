@@ -2,16 +2,16 @@ import pandas as pd
 from utils import *
 from location import Location
 from person import Driver, Student
-from algorithm import *
+from algorithm import stable_student, stable_driver
 import time
-from debug_numbers import *
+from debug_numbers import print_scores_to_file
 
 
 def read_data(drivers_data, students_data):
-    print(type(drivers_data))
-    students_df = pd.DataFrame.from_dict(students_data)
-    drivers_df = pd.DataFrame.from_dict(drivers_data)
-    is_real_data = True if 43 <= drivers_data['x'].mean() < 44 else False
+    students_df = pd.DataFrame(students_data)
+    drivers_df = pd.DataFrame(drivers_data)
+    print(students_df.columns)
+    is_real_data = True if 43 <= drivers_df['x'].mean() < 44 else False
     num_gates = students_df['gate_group'].max() + 1
     drivers = []
     driver_names = []
@@ -33,16 +33,17 @@ def read_data(drivers_data, students_data):
         name = str(row['name']).strip()
         district = row['district']
         phone = row['phone']
-        driver_name = str(row['driver']).strip()
         friend_names = [f.strip() for f in str(row['friends']).split('&')]
         loc = Location(x, y, center_coords, is_real_data)
         student = Student(loc, center_coords, leave_time, name, district, gate, phone, friend_names)
         students.append(student)
         # if already has driver name in the sheet, add student to that driver
-        if (driver_name is not np.nan) and (driver_name in driver_names):
-            idx = driver_names.index(driver_name)
-            driver = drivers[idx]
-            driver.add_student(student)
+        if 'driver' in students_df.columns:
+            driver_name = str(row['driver']).strip()
+            if (driver_name is not np.nan) and (driver_name in driver_names):
+                idx = driver_names.index(driver_name)
+                driver = drivers[idx]
+                driver.add_student(student)
     # add friends by their names
     student_names = []
     for student in students:
