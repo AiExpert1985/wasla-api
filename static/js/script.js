@@ -1,11 +1,5 @@
-document.addEventListener('DOMContentLoaded', function(){
-});
-
 let gates = true;
-let boost = true;
 document.querySelector('#consider-gates').addEventListener("change", (event)=> gates = event.target.checked);
-document.querySelector('#consider-boost').addEventListener("change", (event)=> boost = event.target.checked);
-
 
 let drivers_file;
 let drivers;
@@ -21,7 +15,6 @@ document.querySelector('#drivers').addEventListener("change", (event) => {
     }
 });
 
-
 let students_file;
 let students;
 document.querySelector('#students').addEventListener("change", (event) =>{
@@ -36,21 +29,21 @@ document.querySelector('#students').addEventListener("change", (event) =>{
      }
 });
 
-
 document.querySelector('#post').addEventListener("click", () => {
     let api_key = "ksdjf34234a23423"
-    let data = {"drivers": drivers,
-                "students": students,
-                "consider_gates": gates,
-                "consider_boost": boost,
-                "api_key": api_key,
-    };
-    fetch('/test', {
+//    let data = {"drivers": drivers,
+//                "students": students,
+//                "consider_gates": gates,
+//                "api_key": api_key,
+//    };
+    const formData = new FormData();
+    formData.append('drivers', drivers);
+    formData.append('students', students);
+    formData.append('consider_gates', gates)
+    formData.append('api_key', api_key)
+    fetch('/algorithm', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+      body: formData,
     })
     .then(response => response.json())
     .then(result => console.log('Success:', result))

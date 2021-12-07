@@ -1,33 +1,29 @@
 from models import *
 from flask import render_template, jsonify, request
+import json
+from processing import *
 
 db.init_app(app)
 
 
 @app.route('/')
 def home_page():
-    example_embed = 'This string is from python'
-    return render_template('index.html', embed=example_embed)
+    return render_template('index.html')
 
 
-@app.route("/algorithm")
-def algorithm():
-    print("hi")
-    return jsonify(student_id=33, driver_id=42)
-
-
-@app.route('/test', methods=['POST'])
+@app.route('/algorithm', methods=['POST'])
 def testfn():
     if request.method != 'POST':
         return "You must use POST method", 405
-    data = request.get_json()
-    key = data['api_key']
-    if key != "ksdjf34234a23423":
-        return "You are not authorized", 404
-    drivers = data['drivers']
-    students = data['students']
-    consider_gates = data['consider_gates']
-    consider_boost = data['consider_boost']
+    key = request.form['api_key']
+    # if key != "ksdjf34234a23423":
+    #     return "You are not authorized", 404
+    drivers_data = json.loads(request.form['drivers'])
+    print(drivers_data)
+    students_data = request.form['students']
+    consider_gates = request.form['consider_gates']
+    drivers, students = read_data(drivers_data, students_data)
+    apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
     return jsonify(successful="all were uploaded!")
 
 
