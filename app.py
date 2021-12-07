@@ -21,6 +21,10 @@ def testfn():
     if request.method == 'POST':
         drivers = request.form['drivers']
         students = request.form['students']
+        gates = request.form['gates']
+        boost = request.form['boost']
+        print(gates, 'gates')
+        print(boost, 'boost')
         return jsonify(successful="all were uploaded!")
 
 

@@ -32,16 +32,25 @@ document.querySelector('#upload-students').addEventListener("click", () => {
 });
 
 
+let gates
+document.querySelector('#consider-gates').addEventListener("change", (event)=> gates = event.target.checked)
+
+
+let boost
+document.querySelector('#consider-boost').addEventListener("change", (event)=> boost = event.target.checked)
+
+
 document.querySelector('#post').addEventListener("click", () => {
     let formData = new FormData();
     formData.append('drivers', drivers);
     formData.append('students', students);
+    formData.append('gates', gates);
+    formData.append('boost', boost);
     fetch('/test', {body: formData, method: "post"})
     .then(response => response.json())
     .then(data => console.log('Success:', data))
     .catch((error) => console.error('Error:', error));
 });
-
 
 
 
