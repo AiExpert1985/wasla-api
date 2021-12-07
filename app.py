@@ -21,14 +21,13 @@ def testfn():
     if request.method != 'POST':
         return "You must use POST method", 405
     data = request.get_json()
+    key = data['api_key']
+    if key != "ksdjf34234a23423":
+        return "You are not authorized", 404
     drivers = data['drivers']
     students = data['students']
     consider_gates = data['consider_gates']
     consider_boost = data['consider_boost']
-    print("drivers", drivers)
-    print("students", students)
-    print("gates", consider_gates)
-    print("boost", consider_boost)
     return jsonify(successful="all were uploaded!")
 
 
