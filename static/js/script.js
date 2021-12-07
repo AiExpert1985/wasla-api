@@ -1,5 +1,15 @@
+document.addEventListener('DOMContentLoaded', function(){
+
+});
+
+let gates = true;
+let boost = true;
+document.querySelector('#consider-gates').addEventListener("change", (event)=> gates = event.target.checked);
+document.querySelector('#consider-boost').addEventListener("change", (event)=> boost = event.target.checked);
+
+
 let drivers_file;
-let drivers
+let drivers;
 document.querySelector('#drivers').addEventListener("change", (event) => drivers_file = event.target.files)
 document.querySelector('#upload-drivers').addEventListener("click", () => {
     if(drivers_file){
@@ -16,7 +26,7 @@ document.querySelector('#upload-drivers').addEventListener("click", () => {
 
 
 let students_file;
-let students
+let students;
 document.querySelector('#students').addEventListener("change", (event) => students_file = event.target.files)
 document.querySelector('#upload-students').addEventListener("click", () => {
     if(students_file){
@@ -32,12 +42,7 @@ document.querySelector('#upload-students').addEventListener("click", () => {
 });
 
 
-let gates
-document.querySelector('#consider-gates').addEventListener("change", (event)=> gates = event.target.checked)
 
-
-let boost
-document.querySelector('#consider-boost').addEventListener("change", (event)=> boost = event.target.checked)
 
 
 document.querySelector('#post').addEventListener("click", () => {
