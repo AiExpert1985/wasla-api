@@ -1,80 +1,49 @@
-document.addEventListener('DOMContentLoaded', function(){
-    upload_data();
-});
-
-//function upload_data(){
-//    const data = { username: 'example' };
-//    fetch('/algorithm', {
-//      method: 'POST', // or 'PUT'
-//      headers: {
-//        'Content-Type': 'application/json',
-//      },
-//      body: JSON.stringify(data),
-//    })
-//    .then(response => response.json())
-//    .then(data => {
-//      console.log('Success:', data);
-//    })
-//    .catch((error) => {
-//      console.error('Error:', error);
-//    });
-//}
-
-function upload_data(){
-  fetch('/test')
-        .then(response => response.json())
-        .then(text => console.log(text.greeting))
-}
-
-//function upload_excel_files(url){
-//    const formData = new FormData();
-//    const photos = document.querySelector('input[type="file"][multiple]');
-//
-//    formData.append('title', 'My Vegas Vacation');
-//    for (let i = 0; i < photos.files.length; i++) {
-//      formData.append(`photos_${i}`, photos.files[i]);
-//    }
-//
-//    fetch(`/${url}`, {
-//      method: 'POST',
-//      body: formData,
-//    })
-//    .then(response => response.json())
-//    .then(result => {
-//      console.log('Success:', result);
-//    })
-//    .catch(error => {
-//      console.error('Error:', error);
-//    });
-//}
-
-let selectedFile;
-console.log(window.XLSX);
-document.getElementById('input').addEventListener("change", (event) => {
-    selectedFile = event.target.files[0];
-})
-
-let data=[{
-    "name":"jayanth",
-    "data":"scd",
-    "abc":"sdef"
-}]
-
-
-document.getElementById('button').addEventListener("click", () => {
-    XLSX.utils.json_to_sheet(data, 'out.xlsx');
-    if(selectedFile){
-        let fileReader = new FileReader();
-        fileReader.readAsBinaryString(selectedFile);
-        fileReader.onload = (event)=>{
-         let data = event.target.result;
-         let workbook = XLSX.read(data,{type:"binary"});
-         console.log(workbook);
-         workbook.SheetNames.forEach(sheet => {
-              let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
-              console.log(rowObject);
-              document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
-         });
+let drivers_file;
+let drivers
+document.querySelector('#drivers').addEventListener("change", (event) => drivers_file = event.target.files)
+document.querySelector('#upload-drivers').addEventListener("click", () => {
+    if(drivers_file){
+        let drivers_reader = new FileReader();
+        drivers_reader.readAsBinaryString(drivers_file[0]);
+        drivers_reader.onload = (event)=>{
+            let drivers_data = event.target.result;
+            let drivers_workbook = XLSX.read(drivers_data,{type:"binary"});
+            let drivers_rowObject = XLSX.utils.sheet_to_row_object_array(drivers_workbook.Sheets[drivers_workbook.SheetNames[0]]);
+            drivers = JSON.stringify(drivers_rowObject,undefined,4);
         }
     }
 });
+
+
+let students_file;
+let students
+document.querySelector('#students').addEventListener("change", (event) => students_file = event.target.files)
+document.querySelector('#upload-students').addEventListener("click", () => {
+    if(students_file){
+        let students_reader = new FileReader();
+        students_reader.readAsBinaryString(students_file[0]);
+        students_reader.onload = (event)=>{
+            let students_data = event.target.result;
+            let students_workbook = XLSX.read(students_data,{type:"binary"});
+            let students_rowObject = XLSX.utils.sheet_to_row_object_array(students_workbook.Sheets[students_workbook.SheetNames[0]]);
+            students = JSON.stringify(students_rowObject,undefined,4);
+        }
+     }
+});
+
+
+document.querySelector('#post').addEventListener("click", () => {
+    let formData = new FormData();
+    formData.append('drivers', drivers);
+    formData.append('students', students);
+    fetch('/test', {body: formData, method: "post"})
+    .then(response => response.json())
+    .then(data => console.log('Success:', data))
+    .catch((error) => console.error('Error:', error));
+});
+
+
+
+
+
+

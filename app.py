@@ -16,14 +16,12 @@ def algorithm():
     return jsonify(student_id=33, driver_id=42)
 
 
-@app.route('/test', methods=['GET', 'POST'])
-def testfn():    # GET request
-    if request.method == 'GET':
-        message = {'greeting':'Hello from Flask!'}
-        return jsonify(message)  # serialize and use JSON headers    # POST request
+@app.route('/test', methods=['POST'])
+def testfn():
     if request.method == 'POST':
-        print(request.get_json())  # parse as JSON
-        return 'Sucesss', 200
+        drivers = request.form['drivers']
+        students = request.form['students']
+        return jsonify(successful="all were uploaded!")
 
 
 if __name__ == "__main__":
