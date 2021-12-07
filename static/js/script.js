@@ -42,18 +42,21 @@ document.querySelector('#upload-students').addEventListener("click", () => {
 });
 
 
-
-
-
 document.querySelector('#post').addEventListener("click", () => {
-    let formData = new FormData();
-    formData.append('drivers', drivers);
-    formData.append('students', students);
-    formData.append('gates', gates);
-    formData.append('boost', boost);
-    fetch('/test', {body: formData, method: "post"})
+    let data = {"drivers": drivers,
+                "students": students,
+                "consider_gates": gates,
+                "consider_boost": boost
+    }
+    fetch('/test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
     .then(response => response.json())
-    .then(data => console.log('Success:', data))
+    .then(result => console.log('Success:', result))
     .catch((error) => console.error('Error:', error));
 });
 

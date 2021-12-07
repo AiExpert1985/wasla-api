@@ -18,14 +18,18 @@ def algorithm():
 
 @app.route('/test', methods=['POST'])
 def testfn():
-    if request.method == 'POST':
-        drivers = request.form['drivers']
-        students = request.form['students']
-        gates = request.form['gates']
-        boost = request.form['boost']
-        print(gates, 'gates')
-        print(boost, 'boost')
-        return jsonify(successful="all were uploaded!")
+    if request.method != 'POST':
+        return "You must use POST method", 405
+    data = request.get_json()
+    drivers = data['drivers']
+    students = data['students']
+    consider_gates = data['consider_gates']
+    consider_boost = data['consider_boost']
+    print("drivers", drivers)
+    print("students", students)
+    print("gates", consider_gates)
+    print("boost", consider_boost)
+    return jsonify(successful="all were uploaded!")
 
 
 if __name__ == "__main__":
