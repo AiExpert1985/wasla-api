@@ -44,48 +44,36 @@ document.querySelector('#post').addEventListener("click", () => {
       body: JSON.stringify(data),
     })
     .then(response => response.json())
-    .then(result => paths)
+    .then(result => {
+        paths = result['paths']
+        initMap(paths)
+     })
     .catch((error) => console.error('Error:', error));
 });
 
 
-function initMap(drivers, students, paths) {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 11,
-    center: { lat: 36.37665963355008, lng: 43.146406822212754 },
-    mapTypeId: "roadmap",
-  });
-  const flightPlanCoordinates = [
-    { lat: 36.3081484, lng: 43.1983524 },
-    { lat: 36.3114923, lng: 43.1918611 },
-    { lat: 36.3672184, lng: 43.1349632 },
-    { lat: 36.3766596, lng: 43.1464068 },
-  ];
-  const flightPath = new google.maps.Polyline({
-    path: flightPlanCoordinates,
-    geodesic: true,
-    strokeColor: "#FF0000",
-    strokeOpacity: 1.0,
-    strokeWeight: 1.0,
-  });
-
-  flightPath.setMap(map);
- const flight2PlanCoordinates = [
-    { lat: 36.3081484, lng: 43.2983524 },
-    { lat: 36.3114923, lng: 43.2918611 },
-    { lat: 36.3672184, lng: 43.2349632 },
-    { lat: 36.3766596, lng: 43.2464068 },
-  ];
-  const flight2Path = new google.maps.Polyline({
-    path: flight2PlanCoordinates,
-    geodesic: true,
-    strokeColor: "#FF0000",
-    strokeOpacity: 1.0,
-    strokeWeight: 1.0,
-  });
-
-  flight2Path.setMap(map);
+function initMap(paths) {
+    const map = new google.maps.Map(document.getElementById("map"), {
+                                    zoom: 11,
+                                    center: { lat: 36.37665963355008, lng: 43.146406822212754 },
+                                    mapTypeId: "roadmap",
+                                    });
+    for(var i in paths){
+        var random_color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+        const student_coordinates = paths[i]
+        console.log(student_coordinates)
+        const driver_path = new google.maps.Polyline({
+                                path: student_coordinates,
+                                geodesic: true,
+                                strokeColor: random_color,
+                                strokeOpacity: 1.0,
+                                strokeWeight: 1.0,
+                                });
+        driver_path.setMap(map)
+    }
 }
+
+
 
 
 

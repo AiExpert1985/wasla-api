@@ -26,11 +26,7 @@ def testfn():
     drivers, students = read_data(drivers_data, students_data, center_coords)
     apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
     stats = statistics(students, drivers)
-    for locations in routes(drivers):
-        paths = []
-        for loc in locations:
-            x, y = loc.get_coords()
-            paths.append({'x': x, 'y': y})
+    paths = routes(drivers)
     return jsonify(paths=paths)
 
 

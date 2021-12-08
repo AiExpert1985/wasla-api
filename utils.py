@@ -16,8 +16,19 @@ def string_to_numeric_time(x):
     return numeric_time
 
 
+# def routes(drivers):
+#     return [driver.get_route()[0] for driver in drivers]
+
+
 def routes(drivers):
-    return [driver.get_route()[0] for driver in drivers]
+    all_routes = {}
+    for driver in drivers:
+        points = []
+        for loc in driver.get_route()[0]:
+            x, y = loc.get_coords()
+            points.append({'lat': y, 'lng':x})
+        all_routes[driver.get_name()] = points
+    return all_routes
 
 
 def specific_route(drivers, driver_coords):
