@@ -69,6 +69,12 @@ function initMap(paths) {
                                 strokeOpacity: 1.0,
                                 strokeWeight: 1.0,
                                 });
+        driver_coordinates = student_coordinates[0]
+        new google.maps.Marker({
+            position: driver_coordinates,
+            map,
+            label: i,
+        });
         driver_path.setMap(map)
     }
 }
