@@ -13,14 +13,14 @@ def print_scores_to_file(students, drivers):
             lines += f"{driver} base_time = {round(driver.get_base_time(), 2)}\n"
             preferences = driver.get_preferences()
             for student in preferences:
-                lines += f"{student} = {round(driver.final_score(student), 3)}\n"
+                lines += f"{student} = {round(driver.final_score(student), 5)}\n"
             lines += ("o" * 40) + "\n\n"
         lines += "\n\n"
         for student in students:
             lines += f"{student}\n"
             preferences = student.get_preferences()
             for driver in preferences:
-                lines += f"{driver} = {round(student.final_score(driver), 3)}\n"
+                lines += f"{driver} = {round(student.final_score(driver), 5)}\n"
             lines += ("#" * 40) + "\n\n"
         f.write(lines)
         f.close()

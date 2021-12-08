@@ -5,27 +5,31 @@ from person import Driver, Student
 from algorithm import stable_student, stable_driver
 import time
 from debug_numbers import print_scores_to_file
+from boost import enhanced_by_dropping_worst
 
 
 def read_data(drivers_data, students_data):
     students_df = pd.DataFrame(students_data)
     drivers_df = pd.DataFrame(drivers_data)
-    print(students_df.columns)
     is_real_data = True if 43 <= drivers_df['x'].mean() < 44 else False
     num_gates = students_df['gate_group'].max() + 1
     drivers = []
     driver_names = []
     center_coords = get_center_coords(is_real_data)
+    drivers_df = drivers_df.sample(30, replace=False)  # randomly choose 50 drivers for better testing
     for index, row in drivers_df.iterrows():
+        id = row['id']
         x = row['x']
         y = row['y']
         name = row['name'].strip()
         driver_names.append(name)
         district = row['district']
         loc = Location(x, y, center_coords, is_real_data)
-        drivers.append(Driver(loc, center_coords, name, district, num_gates))
+        drivers.append(Driver(id, loc, center_coords, name, district, num_gates))
     students = []
+    students_df = students_df.sample(150, replace=False)  # randomly choose 50 drivers for better testing
     for index, row in students_df.iterrows():
+        id = row['id']
         x = row['x']
         y = row['y']
         leave_time = str(row['leave_time'])
@@ -33,9 +37,12 @@ def read_data(drivers_data, students_data):
         name = str(row['name']).strip()
         district = row['district']
         phone = row['phone']
-        friend_names = [f.strip() for f in str(row['friends']).split('&')]
+        if 'friends' in students_df.columns:
+            friend_names = [f.strip() for f in str(row['friends']).split('&')]
+        else:
+            friend_names = ""
         loc = Location(x, y, center_coords, is_real_data)
-        student = Student(loc, center_coords, leave_time, name, district, gate, phone, friend_names)
+        student = Student(id, loc, center_coords, leave_time, name, district, gate, phone, friend_names)
         students.append(student)
         # if already has driver name in the sheet, add student to that driver
         if 'driver' in students_df.columns:
@@ -44,25 +51,23 @@ def read_data(drivers_data, students_data):
                 idx = driver_names.index(driver_name)
                 driver = drivers[idx]
                 driver.add_student(student)
-    # add friends by their names
-    student_names = []
-    for student in students:
-        student_names.append(student.get_name())
-    for student in students:
-        for friend_name in student.get_friend_names():
-            if not friend_name == "":
-                idx = student_names.index(friend_name)
-                friend = students[idx]
-                if friend not in student.get_friends():
-                    student.add_friend(friend)
-                if student not in friend.get_friends():
-                    friend.add_friend(student)
+    if 'friends' in students_df.columns:
+        student_names = []
+        for student in students:
+            student_names.append(student.get_name())
+        for student in students:
+            for friend_name in student.get_friend_names():
+                if not friend_name == "":
+                    idx = student_names.index(friend_name)
+                    friend = students[idx]
+                    if friend not in student.get_friends():
+                        student.add_friend(friend)
+                    if student not in friend.get_friends():
+                        friend.add_friend(student)
     return drivers, students
 
 
-def create_preferences(consider_dist, consider_gate, consider_time, consider_friends):
-    global students
-    global drivers
+def create_preferences(students, drivers, consider_dist, consider_gate, consider_time, consider_friends):
     for driver in drivers:
         driver.calculate_student_dist_scores(students)
     for student in students:
@@ -78,7 +83,7 @@ def apply_algorithm(students, drivers, consider_gates, print_to_scores_file=Fals
     consider_dist = True
     consider_time = False
     consider_friends = False
-    create_preferences(consider_dist, consider_gates, consider_time, consider_friends)
+    create_preferences(students, drivers, consider_dist, consider_gates, consider_time, consider_friends)
     # remove pre-picked students before applying the algorithm
     pre_picked_students = []
     for student in students:
@@ -89,13 +94,105 @@ def apply_algorithm(students, drivers, consider_gates, print_to_scores_file=Fals
     if len(drivers) <= len(students) / 4:
         algorithm = stable_driver
     else:
-        algorithm = stable_student()
+        algorithm = stable_student
     algorithm(drivers, students)
-    # we must make sure all students will be included in visualization functions
-    students += pre_picked_students
+
+    if len(drivers) < len(students) / 4:
+        gate_weight = 0.2 if consider_gates else 0.0
+        num_repetition = 10
+        num_gates = len(drivers[0].gate_score_list)
+        students, drivers = enhanced_by_dropping_worst(drivers, students, num_gates, gate_weight, num_repetition)
+
     t1 = time.time()
     execution_time = t1 - t0
     print(f"\nTotal execution time = {round(execution_time, 2)} seconds")
 
     if print_to_scores_file:
         print_scores_to_file(students, drivers)
+
+    return students, drivers
+
+
+def stats(students, drivers):
+    num_gates = len(drivers[0].gate_score_list)
+    global num_gates
+    global is_real_data
+    paths = routes(drivers, is_real_data)
+    if len(paths) == 0:
+        user_message.configure(text="You must apply the algorithm first", fg="red")
+        return
+    new_window = Toplevel(main_window)
+    new_window.title("Statistics")
+    new_window.geometry("700x500")
+    body = Frame(new_window, pady=40)
+    body.pack()
+    messages = []
+    # drivers and students
+    drivers_without_students = [driver for driver in drivers if len(driver.picked_students()) == 0]
+    message_drivers_without_students = f"Drivers with no students = {len(drivers_without_students)}"
+    messages.append(message_drivers_without_students)
+    drivers = [driver for driver in drivers if len(driver.picked_students()) > 0]
+    drivers_not_full = [driver for driver in drivers if len(driver.picked_students()) < 4]
+    message_drivers_not_full = f"Drivers with less than 4 students = {len(drivers_not_full)}"
+    messages.append(message_drivers_not_full)
+    unpicked_students = [student for student in students if student.driver is None]
+    message_unpicked_students = f"Unpicked students = {len(unpicked_students)}"
+    messages.append(message_unpicked_students)
+    messages.append("")
+    # distance
+    total_distance = get_total_distance(drivers, is_real_data)
+    avg_distance = total_distance / len(drivers)
+    message_total_dist = f"Total distance = {round(total_distance, 2)} km"
+    message_avg_dist = f"Average distance per driver = {round(avg_distance, 2)} km"
+    messages.append(message_total_dist)
+    messages.append(message_avg_dist)
+    messages.append("")
+    shortest_dist_driver = get_shortest_dist_driver(drivers, is_real_data)
+    longest_dist_driver = get_longest_dist_driver(drivers, is_real_data)
+    message_shortest_dist = \
+        f"Shortest distance = {round(shortest_dist_driver.get_route(is_real_data)[1], 2)} km : {shortest_dist_driver.get_name()}"
+    message_longest_dist = \
+        f"Longest distance = {round(longest_dist_driver.get_route(is_real_data)[1], 2)} km: {longest_dist_driver.get_name()}"
+    messages.append(message_shortest_dist)
+    messages.append(message_longest_dist)
+    messages.append("")
+    # # time
+    # total_time = get_total_time(drivers)
+    # avg_time = total_time / len(drivers)
+    # message_total_time = f"Total waiting time = {round(total_time, 2)} hrs"
+    # message_avg_time = f"Average time per driver = {round(avg_time, 2)} hrs"
+    # messages.append(message_total_time)
+    # messages.append(message_avg_time)
+    # messages.append("")
+    # lease_time_driver = get_shortest_time_driver(drivers)
+    # most_time_driver = get_longest_time_driver(drivers)
+    # message_shortest_time = \
+    #     f"Shortest waiting time = {round(lease_time_driver.get_wait_time(), 2)} hrs: {lease_time_driver.get_name()}"
+    # message_longest_time = \
+    #     f"longest waiting time = {round(most_time_driver.get_wait_time(), 2)} hrs: {most_time_driver.get_name()}"
+    # messages.append(message_shortest_time)
+    # messages.append(message_longest_time)
+    # messages.append("")
+    # gates
+    drivers_with_single_gate = 0
+    drivers_with_one_gate = 0
+    drivers_with_three_or_more_gates = 0
+    for driver in drivers:
+        gates = [0] * num_gates
+        for student in driver.picked_students():
+            gates[student.get_gate_group()] = 1
+        if sum(gates) == 1:
+            drivers_with_single_gate += 1
+        elif sum(gates) == 2:
+            drivers_with_one_gate += 1
+        else:
+            drivers_with_three_or_more_gates += 1
+    message_one_gate = f"Drivers with one gate = {round(100*drivers_with_single_gate/len(drivers))} %"
+    message_two_gates = f"Drivers with two gates = {round(100*drivers_with_one_gate/len(drivers))} %"
+    message_more_gates = f"Drivers with 3 or more gates = {round(100*drivers_with_three_or_more_gates/len(drivers))} %"
+    messages.append(message_one_gate)
+    messages.append(message_two_gates)
+    messages.append(message_more_gates)
+    messages.append("")
+    for message in messages:
+        Label(body, text=message, fg="green", font=("Helvetica", 14)).pack(ipady=1)

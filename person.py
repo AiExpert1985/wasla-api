@@ -4,7 +4,7 @@ from utils import *
 
 class Person:
 
-    def __init__(self, loc, center_coords, name, district):
+    def __init__(self, id, loc, center_coords, name, district):
         self.loc = loc
         self.preferences = []
         self.iterable_preferences = None
@@ -80,8 +80,8 @@ class Person:
 
 class Driver(Person):
 
-    def __init__(self, loc, center_coords, name, district, num_gates):
-        Person.__init__(self, loc, center_coords, name, district)
+    def __init__(self, id, loc, center_coords, name, district, num_gates):
+        Person.__init__(self, id, loc, center_coords, name, district)
         self.students = []
         self.student_dist_score_lookup = {}
         self.dist_score_lookup = {}
@@ -248,9 +248,9 @@ class Driver(Person):
 
 
 class Student(Person):
-    def __init__(self, loc, center_coords, leave_time, name, district, gate_group,
+    def __init__(self,id, loc, center_coords, leave_time, name, district, gate_group,
                  phone, friend_names):
-        Person.__init__(self, loc, center_coords, name, district)
+        Person.__init__(self, id, loc, center_coords, name, district)
         self.leave_time = str(leave_time)
         self.driver_dist_score_lookup = {}
         self.gate_name = gate_group
