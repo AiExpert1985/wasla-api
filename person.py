@@ -215,7 +215,7 @@ class Driver(Person):
         self.preferences = self.sorted_by_criterion(students, "final_score", flipped=True)
         self.iterable_preferences = iter(self.preferences.copy())
 
-    def get_route(self, is_real_data):
+    def get_route(self):
         import itertools
         locations = [student.get_location() for student in self.picked_students()]
         paths = [list(perm) for perm in itertools.permutations(locations)]
@@ -223,7 +223,7 @@ class Driver(Person):
         for path in paths:
             path.insert(0, self.get_location())
             center_x, center_y = self.center_coords[0], self.center_coords[1]
-            path.append(Location(center_x, center_y, (center_x, center_y), is_real_data))
+            path.append(Location(center_x, center_y, (center_x, center_y)))
             distance = 0
             for i in range(1, len(path)):
                 distance += path[i].distance_to(path[i - 1])

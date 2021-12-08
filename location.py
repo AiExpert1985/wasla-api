@@ -3,11 +3,10 @@ import numpy as np
 
 class Location:
 
-    def __init__(self, x, y, center_coords=(0, 0), is_geographic_data=True):
+    def __init__(self, x, y, center_coords=(0, 0)):
         self.x = x
         self.y = y
         self.center_coords = center_coords
-        self.is_geographic_data = is_geographic_data
         self.dist_to_locations = {}
         self.dist_to_center = self.distance_to_center()
 
@@ -38,9 +37,7 @@ class Location:
     def manhattan_dist(self, x, y):
         dx = np.abs(self.x - x)
         dy = np.abs(self.y - y)
-        distance = dx + dy  # in units
-        if self.is_geographic_data:
-            distance *= 100  # converting longitude and latitude to kilometers
+        distance = 100 * (dx + dy)
         return distance
 
     def __str__(self):

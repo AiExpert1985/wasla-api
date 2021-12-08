@@ -1,13 +1,6 @@
 import numpy as np
 
 
-def get_center_coords(is_geographic_data):
-    if is_geographic_data:
-        return 43.146406822212754, 36.37665963355008
-    else:
-        return 0, 0
-
-
 def string_to_numeric_time(x):
     try:
         if len(x) > 5:
@@ -23,33 +16,33 @@ def string_to_numeric_time(x):
     return numeric_time
 
 
-def routes(drivers, is_real_data):
-    return [driver.get_route(is_real_data)[0] for driver in drivers]
+def routes(drivers):
+    return [driver.get_route()[0] for driver in drivers]
 
 
-def specific_route(drivers, driver_coords, is_real_data):
+def specific_route(drivers, driver_coords):
     for driver in drivers:
         if driver.get_coords() == driver_coords:
-            return driver.get_route(is_real_data)[0]
+            return driver.get_route()[0]
     raise LookupError("Driver not found")
 
 
-def get_shortest_path(drivers, is_real_data):
-    distances = [driver.get_route(is_real_data)[1] for driver in drivers]
+def get_shortest_path(drivers):
+    distances = [driver.get_route()[1] for driver in drivers]
     idx = np.argmin(distances)
     return drivers[idx].get_route[0]
 
 
-def get_longest_path(drivers, is_real_data):
-    distances = [driver.get_route(is_real_data)[1] for driver in drivers]
+def get_longest_path(drivers):
+    distances = [driver.get_route()[1] for driver in drivers]
     idx = np.argmax(distances)
-    return drivers[idx].get_route(is_real_data)[0]
+    return drivers[idx].get_route()[0]
 
 
-def get_total_distance(drivers, is_real_data):
+def get_total_distance(drivers):
     distance = 0
     for driver in drivers:
-        distance += driver.get_route(is_real_data)[1]
+        distance += driver.get_route()[1]
     return round(distance, 2)
 
 
@@ -57,13 +50,13 @@ def get_total_time(drivers):
     return sum([driver.get_wait_time() for driver in drivers])
 
 
-def get_shortest_dist_driver(drivers, is_real_data):
-    idx = np.argmin([driver.get_route(is_real_data)[1] for driver in drivers])
+def get_shortest_dist_driver(drivers):
+    idx = np.argmin([driver.get_route()[1] for driver in drivers])
     return drivers[idx]
 
 
-def get_longest_dist_driver(drivers, is_real_data):
-    idx = np.argmax([driver.get_route(is_real_data)[1] for driver in drivers])
+def get_longest_dist_driver(drivers):
+    idx = np.argmax([driver.get_route()[1] for driver in drivers])
     return drivers[idx]
 
 

@@ -22,9 +22,11 @@ def testfn():
     drivers_data = json.loads(data['drivers'])
     students_data = json.loads(data['students'])
     consider_gates = data['consider_gates']
-    drivers, students = read_data(drivers_data, students_data)
+    center_coords = data['center_coords']
+    drivers, students = read_data(drivers_data, students_data, center_coords)
     apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
-    return jsonify(successful="all were uploaded!")
+    stats = statistics(students, drivers)
+    return jsonify(successful=stats)
 
 
 if __name__ == "__main__":

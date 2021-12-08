@@ -2,10 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
         <title>Eshtirakat</title>
     </head>
 
     <body>
+        <div id="map"></div>
         <div>
             <input type="file" id="drivers" accept=".xls,.xlsx">
         </div>
@@ -22,5 +24,7 @@
     </body>
     <script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/xlsx.full.min.js')}}"></script>
+    <!-- google map api -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBv0K_2JQc-_l275fhZU6cU3d2zLymYmXM&callback=initMap&libraries=&v=weekly" async></script>
 
 </html>
