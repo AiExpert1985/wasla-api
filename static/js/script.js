@@ -44,12 +44,12 @@ document.querySelector('#post').addEventListener("click", () => {
       body: JSON.stringify(data),
     })
     .then(response => response.json())
-    .then(result => console.log('Success:', result))
+    .then(result => paths)
     .catch((error) => console.error('Error:', error));
 });
 
 
-function initMap() {
+function initMap(drivers, students, paths) {
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 11,
     center: { lat: 36.37665963355008, lng: 43.146406822212754 },
