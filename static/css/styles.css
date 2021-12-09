@@ -2,3 +2,18 @@
   height: 600px;
   width: 100%;
 }
+
+#distance-stats{
+  width: 300px;
+  margin: 20px;
+}
+
+#gate-stats{
+  width: 300px;
+  margin: 20px;
+}
+
+#short-long-dist{
+  width: 300px;
+  margin: 20px;
+}

@@ -8,18 +8,19 @@
 
     <body>
         <div id="map"></div>
-        <div>
-            <input type="file" id="drivers" accept=".xls,.xlsx">
+        <div id="uplod-data">
+            <div><input type="file" id="drivers" accept=".xls,.xlsx"></div>
+            <div><input type="file" id="students" accept=".xls,.xlsx"></div>
+            <div>
+                <input type="checkbox" id="consider-gates" name="dates" value="gates" checked="true">
+                <label for="gates">Consider Gates ?</label>
+            </div>
+            <div><button id="post">post</button></div>
         </div>
-        <div>
-            <input type="file" id="students" accept=".xls,.xlsx">
-        </div>
-        <div>
-            <input type="checkbox" id="consider-gates" name="dates" value="gates" checked="true">
-            <label for="gates">Consider Gates ?</label>
-        </div>
-        <div>
-            <button id="post">post</button>
+        <div id="stats">
+            <div id="distance-stats"></div>
+            <div id="gate-stats"></div>
+            <div id="short-long-dist"></div>
         </div>
     </body>
     <script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
