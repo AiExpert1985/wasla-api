@@ -21,55 +21,59 @@
 .header {
   border-style: solid;
   background-color: yellow;
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   grid-row: 1 / 2;
   justify-self: stretch;
   align-self: stretch;
-  margin: 1%;
 }
 
 .map {
   border-style: solid;
   background-color: yellow;
-  grid-column: 1 / 3;
-  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  grid-row: 2 / 4;
   justify-self: stretch;
   align-self: stretch;
-  margin: 1%;
+}
+
+.select-drivers{
+  border-style: solid;
+  background-color: yellow;
+  grid-column: 3 / 4;
+  grid-row: 2 / 4;
+  justify-self: stretch;
+  align-self: stretch;
 }
 
 .form {
   border-style: solid;
   background-color: yellow;
   grid-column: 1 / 2;
-  grid-row: 3 / 4;
+  grid-row: 2 / 3;
   justify-self: stretch;
   align-self: stretch;
-  margin: 1%;
 }
 
 .stats {
   border-style: solid;
   background-color: yellow;
-  grid-column: 2 / 3;
+  grid-column: 1 / 2;
   grid-row: 3 / 4;
   justify-self: stretch;
   align-self: stretch;
-  margin: 1%;
 }
 
 .footer {
   border-style: solid;
   background-color: yellow;
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   grid-row: 4 / 5;
   justify-self: stretch;
   align-self: stretch;
-  margin: 1%;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 7fr 2fr 1fr;
+  grid-template-columns: 2fr 7fr 2fr;
+  grid-template-rows: 1fr 5fr 5fr 1fr;
 }
