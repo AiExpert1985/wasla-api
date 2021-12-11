@@ -3,14 +3,16 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-        <title>Eshtirakat</title>
+        		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+        <title>E&#x15F;tirak@</title>
     </head>
 
     <body>
+
         <div class="container">
-            <div class="header"> Header </div>
-            <div class="map" id="map"></div>
-            <div class="select-drivers">dddd</div>
+            <div class="header"> E&#x15F;tirak@ </div>
             <div class="form" id="form">
                 <div><input type="file" id="drivers" accept=".xls,.xlsx"></div>
                 <div><input type="file" id="students" accept=".xls,.xlsx"></div>
@@ -25,8 +27,11 @@
                 <div id="gate-stats"></div>
                 <div id="short-long-dist"></div>
             </div>
-            <div class="footer"> footer</div>
+            <div class="map" id="map"></div>
+            <div class="select-drivers">dddd</div>
+            <div class="footer"> &copy; 2021 </div>
         </div>
+
     </body>
     <script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/xlsx.full.min.js')}}"></script>

@@ -1,79 +1,57 @@
-#map {
-  height: 600px;
-  width: 100%;
+body {
+    font-family: "Source Sans Pro", snas-serif;
+    font-size: 1.5rem;
 }
 
-#distance-stats{
-  width: 300px;
-  margin: 20px;
-}
-
-#gate-stats{
-  width: 300px;
-  margin: 20px;
-}
-
-#short-long-dist{
-  width: 300px;
-  margin: 20px;
+@media screen and (min-width: 850px){
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-areas:
+        "header header header"
+        "form map drivers"
+        "stats map drivers"
+        "footer footer footer";
+    }
 }
 
 .header {
+    padding: 10px;
   border-style: solid;
   background-color: yellow;
-  grid-column: 1 / 4;
-  grid-row: 1 / 2;
-  justify-self: stretch;
-  align-self: stretch;
+  grid-area: header
+}
+
+.form {
+padding: 10px;
+  border-style: solid;
+  background-color: yellow;
+  grid-area: form;
+}
+
+.stats{
+  border-style: solid;
+  background-color: yellow;
+  grid-area: stats;
 }
 
 .map {
   border-style: solid;
   background-color: yellow;
-  grid-column: 2 / 3;
-  grid-row: 2 / 4;
-  justify-self: stretch;
-  align-self: stretch;
+  grid-area: map;
+  height: 500px;
 }
 
 .select-drivers{
   border-style: solid;
   background-color: yellow;
-  grid-column: 3 / 4;
-  grid-row: 2 / 4;
-  justify-self: stretch;
-  align-self: stretch;
-}
-
-.form {
-  border-style: solid;
-  background-color: yellow;
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
-  justify-self: stretch;
-  align-self: stretch;
-}
-
-.stats {
-  border-style: solid;
-  background-color: yellow;
-  grid-column: 1 / 2;
-  grid-row: 3 / 4;
-  justify-self: stretch;
-  align-self: stretch;
+  grid-area: drivers;
 }
 
 .footer {
   border-style: solid;
   background-color: yellow;
-  grid-column: 1 / 4;
-  grid-row: 4 / 5;
-  justify-self: stretch;
-  align-self: stretch;
+  grid-area: footer;
+   text-align: center;
 }
 
-.container {
-  display: grid;
-  grid-template-columns: 2fr 7fr 2fr;
-  grid-template-rows: 1fr 5fr 5fr 1fr;
-}
