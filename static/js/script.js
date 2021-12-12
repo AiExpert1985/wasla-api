@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', function(){
+    document.querySelector(".stats").hidden = true;
+    document.querySelector(".select-drivers").hidden = true;
+});
+
 function initMap(paths) {
     const map = new google.maps.Map(document.getElementById("map"), {
                                     zoom: 11,
@@ -26,6 +31,8 @@ function initMap(paths) {
 
 
 function appendData(stats) {
+    document.querySelector(".stats").hidden = false;
+    document.querySelector(".select-drivers").hidden = false;
     var ids = ["#gate-stats", "#distance-stats", "#short-long-dist"];
     var groups = [['one_gate', 'two_gates', 'more_gates'],
                   ['total_distance', 'average_distance'],

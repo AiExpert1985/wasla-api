@@ -111,20 +111,20 @@ def statistics(students, drivers):
     num_gates = len(drivers[0].gate_score_list)
     stats = {}
     drivers_without_students = [driver for driver in drivers if len(driver.picked_students()) == 0]
-    message_drivers_without_students = f"Drivers with no students = {len(drivers_without_students)}"
+    message_drivers_without_students = f"Drivers with no students  =  {len(drivers_without_students)}"
     stats['num_drivers_without_students'] = message_drivers_without_students
     drivers = [driver for driver in drivers if len(driver.picked_students()) > 0]
     drivers_not_full = [driver for driver in drivers if len(driver.picked_students()) < 4]
-    message_drivers_not_full = f"Drivers with less than 4 students = {len(drivers_not_full)}"
+    message_drivers_not_full = f"Drivers with less than 4 students  =  {len(drivers_not_full)}"
     stats['num_drivers_not_full'] = message_drivers_not_full
     unpicked_students = [student for student in students if student.driver is None]
-    message_unpicked_students = f"Unpicked students = {len(unpicked_students)}"
+    message_unpicked_students = f"Unpicked students  =  {len(unpicked_students)}"
     stats['num_unpicked_students'] = message_unpicked_students
     # distance
     total_distance = get_total_distance(drivers)
     avg_distance = total_distance / len(drivers)
-    message_total_dist = f"Total distance = {round(total_distance, 2)} km"
-    message_avg_dist = f"Average distance per driver = {round(avg_distance, 2)} km"
+    message_total_dist = f"Total distance  =  {round(total_distance, 2)} km"
+    message_avg_dist = f"Average distance per driver  =  {round(avg_distance, 2)} km"
     stats['total_distance'] = message_total_dist
     stats['average_distance'] = message_avg_dist
     shortest_dist_driver = get_shortest_dist_driver(drivers)
@@ -164,9 +164,9 @@ def statistics(students, drivers):
             drivers_with_one_gate += 1
         else:
             drivers_with_three_or_more_gates += 1
-    message_one_gate = f"Drivers with one gate = {round(100*drivers_with_single_gate/len(drivers))} %"
-    message_two_gates = f"Drivers with two gates = {round(100*drivers_with_one_gate/len(drivers))} %"
-    message_more_gates = f"Drivers with 3 or more gates = {round(100*drivers_with_three_or_more_gates/len(drivers))} %"
+    message_one_gate = f"Drivers with one gate  =  {round(100*drivers_with_single_gate/len(drivers))} %"
+    message_two_gates = f"Drivers with two gates  =  {round(100*drivers_with_one_gate/len(drivers))} %"
+    message_more_gates = f"Drivers with 3 or more gates  =  {round(100*drivers_with_three_or_more_gates/len(drivers))} %"
     stats['one_gate'] = message_one_gate
     stats['two_gates'] = message_two_gates
     stats['more_gates'] = message_more_gates
