@@ -13,7 +13,7 @@ body {
 .header {
     padding: 0px 20px 0px 25px;
     font-size: 1.2rem;
-    background-color: #DAA520;
+    background-color: #FFDF00;
     color: #000080;
     grid-column: 1 / -1;
     grid-row: 1 / 2;
