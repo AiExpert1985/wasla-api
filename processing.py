@@ -130,9 +130,9 @@ def statistics(students, drivers):
     shortest_dist_driver = get_shortest_dist_driver(drivers)
     longest_dist_driver = get_longest_dist_driver(drivers)
     message_shortest_dist = \
-        f"Shortest distance = {round(shortest_dist_driver.get_route()[1], 2)} km : {shortest_dist_driver.get_name()}"
+        f"Shortest distance = {round(shortest_dist_driver.get_route()[1], 2)} km"
     message_longest_dist = \
-        f"Longest distance = {round(longest_dist_driver.get_route()[1], 2)} km: {longest_dist_driver.get_name()}"
+        f"Longest distance = {round(longest_dist_driver.get_route()[1], 2)} km"
     stats['shorted_distance'] = message_shortest_dist
     stats['longest_distance'] = message_longest_dist
     # # time
