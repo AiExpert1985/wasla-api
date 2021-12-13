@@ -1,36 +1,36 @@
+var drivers;
+var selected_drivers = [];
+
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelector(".stats").hidden = true;
     document.querySelector(".select-drivers").hidden = true;
-    var drivers;
-    var selected_drivers;
 });
 
-function initMap(paths) {
+function initMap() {
     const map = new google.maps.Map(document.getElementById("map"), {
                                     zoom: 11,
                                     center: { lat: 36.3766596335, lng: 43.14640682224 },
                                     mapTypeId: "roadmap",
                                     });
-    for(var i in paths){
-        var random_color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
-        const student_coordinates = paths[i]
-        const driver_path = new google.maps.Polyline({
-                                path: student_coordinates,
+    for(var i=0; i<selected_drivers.length; i++){
+        var random_color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
+        var path_coordinates = selected_drivers[i]["path"];
+        var driver_path = new google.maps.Polyline({
+                                path: path_coordinates,
                                 geodesic: true,
                                 strokeColor: random_color,
-                                strokeOpacity: 1.0,
-                                strokeWeight: 1.0,
+                                strokeOpacity: 2.0,
+                                strokeWeight: 2.0,
                                 });
-        driver_coordinates = student_coordinates[0]
+        var driver_coordinates = selected_drivers[i]["path"][0];
         new google.maps.Marker({
             position: driver_coordinates,
             map,
-            label: i,
+            label: selected_drivers[i]["name"],
         });
         driver_path.setMap(map)
     }
 }
-
 
 function add_stats(stats) {
     document.querySelector(".stats").hidden = false;
@@ -86,7 +86,7 @@ document.querySelector('.select-drivers').addEventListener("change", (event)=> {
             selected_drivers.push(drivers[i]);
         }
     }
-    console.log(selected_drivers);
+    initMap(selected_drivers)
 });
 
 
@@ -138,13 +138,13 @@ document.querySelector('#post').addEventListener("click", () => {
     })
     .then(response => response.json())
     .then(result => {
-        paths = result['paths']
-        stats = result['stats']
-        drivers = result['drivers']
-        console.log(drivers)
-        initMap(paths)
-        add_stats(stats)
-        add_drivers(drivers)
+        paths = result['paths'];
+        stats = result['stats'];
+        drivers = result['drivers'];
+        selected_drivers = drivers;
+        initMap(drivers);
+        add_stats(stats);
+        add_drivers(drivers);
      })
     .catch((error) => console.error('Error:', error));
 });

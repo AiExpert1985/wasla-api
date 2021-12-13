@@ -253,7 +253,11 @@ class Driver(Person):
             x, y = loc.get_coords()
             path.append({'lat': y, 'lng': x})
         students = [student.serialize() for student in self.picked_students()]
-        return {"name": self.get_name(), "coords": {'lat': y, 'lng': x}, "dist": self.get_route()[1], "path": path, "students": students}
+        return {"name": self.get_name(),
+                "coords": {'lat': y, 'lng': x},
+                "dist": self.get_route()[1],
+                "path": path, "students": students
+                }
 
     def __str__(self):
         return f"Driver:<{self.get_location().x},{self.get_location().y}>"
