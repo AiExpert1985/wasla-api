@@ -6,7 +6,7 @@ body {
 .container {
     display: grid;
     grid-template-columns: 2fr 6fr 2fr;
-    grid-template-rows: 1fr 5fr 10fr 1fr;
+    grid-template-rows: 1fr 0.5fr 5fr 10fr 1fr;
     height: 100vh;
 }
 
@@ -60,7 +60,7 @@ body {
     padding: 20px;
     background-color: rgba(60, 60, 60, 0.8);
     grid-column: 1 / 2;
-    grid-row: 2 / 3;
+    grid-row: 2 / 4;
     z-index:1;
     align-self: start;
     border-radius: 3%;
@@ -68,7 +68,7 @@ body {
 }
 
 .form div {
-    margin: 15px;
+    margin: 10px;
     font-size: 1.2rem;
 }
 
@@ -95,7 +95,7 @@ body {
     margin: 0px 0px 25px 20px;
     padding: 10px;
     grid-column: 1 / 2;
-    grid-row: 3 / 4;
+    grid-row: 3 / 5;
     z-index:1;
     background-color: rgba(60, 60, 60, 0.8);
     align-self: end;
@@ -110,13 +110,28 @@ body {
 .map {
     margin: 10px;
     grid-column: 1 / 4;
-    grid-row: 2 / 4;
+    grid-row: 2 / 5;
+}
+
+.select-groups {
+    margin: 15px 31px 1px 0px;
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    z-index:1;
+    background-color: rgba(60, 60, 60, 0.8);
+    border-radius: 1%;
+    padding: 15px;
+    color: #FFF;
+}
+
+.select-groups label {
+    margin: 5px;
 }
 
 .select-drivers{
-    margin: 15px 15px 15px 0px;
+    margin: 0px 15px 15px 0px;
     grid-column: 3 / 4;
-    grid-row: 2 / 4;
+    grid-row: 3 / 5;
     z-index:1;
     background-color: rgba(60, 60, 60, 0.8);
     border-radius: 1%;

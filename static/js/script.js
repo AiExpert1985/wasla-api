@@ -4,9 +4,11 @@ var selected_drivers = [];
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelector(".stats").hidden = true;
     document.querySelector(".select-drivers").hidden = true;
+    document.querySelector(".select-groups").hidden = true;
 });
 
 function initMap() {
+    icon_base = "https://developers.google.com/maps/documentation/javascript/examples/full/images/";
     const map = new google.maps.Map(document.getElementById("map"), {
                                     zoom: 11,
                                     center: { lat: 36.3766596335, lng: 43.14640682224 },
@@ -22,19 +24,28 @@ function initMap() {
                                 strokeOpacity: 2.0,
                                 strokeWeight: 2.0,
                                 });
+        // show driver locations
         var driver_coordinates = selected_drivers[i]["path"][0];
         new google.maps.Marker({
             position: driver_coordinates,
             map,
-            label: selected_drivers[i]["name"],
+//            label: selected_drivers[i]["name"],
         });
+        // show driver locations for each driver
+        var students = selected_drivers[i].students;
+        for(var j=0; j<students.length; j++){
+            new google.maps.Marker({
+                position: students[j].coords,
+                map,
+                icon: icon_base + "library_maps.png",
+            });
+        }
         driver_path.setMap(map)
     }
 }
 
 function add_stats(stats) {
     document.querySelector(".stats").hidden = false;
-    document.querySelector(".select-drivers").hidden = false;
     var ids = ["#gate-stats", "#distance-stats", "#short-long-dist"];
     var groups = [['one_gate', 'two_gates', 'more_gates'],
                   ['total_distance', 'average_distance'],
@@ -51,6 +62,8 @@ function add_stats(stats) {
 }
 
 function add_drivers(){
+    document.querySelector(".select-drivers").hidden = false;
+    document.querySelector(".select-groups").hidden = false;
     var main_div = document.querySelector(".select-drivers")
     for(var i = 0; i < drivers.length; i++){
         name = drivers[i]["name"];
@@ -72,12 +85,12 @@ function add_drivers(){
 }
 
 document.querySelector('.select-drivers').addEventListener("change", (event)=> {
-        var checkboxes = document.querySelectorAll(".select-driver");
-        var num_checkboxes = checkboxes.length;
-        var selections = [num_checkboxes]
+        let checkboxes = document.querySelectorAll(".select-driver");
+        let num_checkboxes = checkboxes.length;
+        let selections = [num_checkboxes]
         checkboxes.forEach(element => {
-        var idx = element.dataset.idx
-        var checked = element.checked;
+        let idx = element.dataset.idx
+        let checked = element.checked;
         selections[idx] = checked;
     });
     selected_drivers = []
@@ -86,7 +99,26 @@ document.querySelector('.select-drivers').addEventListener("change", (event)=> {
             selected_drivers.push(drivers[i]);
         }
     }
-    initMap(selected_drivers)
+    initMap(selected_drivers);
+    document.querySelector(".all-drivers").checked = false;
+    if(selected_drivers.length == drivers.length){
+        document.querySelector(".all-drivers").checked = true;
+    }
+
+});
+
+document.querySelector('.select-groups').addEventListener("change", (event)=> {
+    let is_all_drivers = document.querySelector(".all-drivers").checked;
+    let checkboxes = document.querySelectorAll(".select-driver");
+    if(is_all_drivers){
+        selected_drivers = drivers;
+        checkboxes.forEach(element => element.checked = true)
+    }
+    else {
+        selected_drivers = [];
+        checkboxes.forEach(element => element.checked = false);
+    }
+    initMap(selected_drivers);
 });
 
 
@@ -123,12 +155,22 @@ document.querySelector('#students').addEventListener("change", (event) =>{
 });
 
 document.querySelector('#post').addEventListener("click", () => {
+    // first clear previous created elements if there are any
+    let stats = document.querySelector(".stats");
+    let children = stats.children;
+    for(var i=0; i<children.length; i++){
+        children[i].innerHTML = "";
+    }
+    document.querySelector(".select-drivers").innerHTML = "";
+    // then start the fetch
     let data = {"drivers": input_drivers,
                 "students": students,
                 "consider_gates": gates,
                 "api_key": "ksdjf34234a23423",
                 "center_coords": [43.146406822212754, 36.37665963355008]
     };
+    drivers = []
+    selected_drivers = []
     fetch('/algorithm/data', {
       method: 'POST',
       headers: {

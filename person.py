@@ -256,7 +256,8 @@ class Driver(Person):
         return {"name": self.get_name(),
                 "coords": {'lat': y, 'lng': x},
                 "dist": self.get_route()[1],
-                "path": path, "students": students
+                "path": path,
+                "students": students
                 }
 
     def __str__(self):
