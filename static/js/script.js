@@ -64,6 +64,7 @@ function add_stats(stats) {
 function add_drivers(){
     document.querySelector(".select-drivers").hidden = false;
     document.querySelector(".select-groups").hidden = false;
+    document.querySelector(".all-drivers").checked = true;
     var main_div = document.querySelector(".select-drivers")
     for(var i = 0; i < drivers.length; i++){
         name = drivers[i]["name"];
