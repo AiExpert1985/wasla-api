@@ -5,7 +5,7 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: 2.5fr 6fr 2fr;
+    grid-template-columns: 2fr 6fr 2fr;
     grid-template-rows: 1fr 5fr 10fr 1fr;
     height: 100vh;
 }
@@ -13,7 +13,7 @@ body {
 .header {
     padding: 0px 20px 0px 25px;
     font-size: 1.2rem;
-    background-color: #FFDF00;
+    background-color: #DAA520;
     color: #000080;
     grid-column: 1 / -1;
     grid-row: 1 / 2;
@@ -68,7 +68,7 @@ body {
 }
 
 .form div {
-    margin: 10px;
+    margin: 15px;
     font-size: 1.2rem;
 }
 
@@ -122,6 +122,15 @@ body {
     border-radius: 1%;
     padding: 10px;
     color: #FFF;
+    overflow-y:auto
+}
+
+.select-drivers div {
+    margin: 5px;
+}
+
+.select-drivers label {
+    margin: 10px;
 }
 
 .footer {

@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelector(".stats").hidden = true;
     document.querySelector(".select-drivers").hidden = true;
+    var drivers;
+    var selected_drivers;
 });
 
 function initMap(paths) {
@@ -30,7 +32,7 @@ function initMap(paths) {
 }
 
 
-function appendData(stats) {
+function add_stats(stats) {
     document.querySelector(".stats").hidden = false;
     document.querySelector(".select-drivers").hidden = false;
     var ids = ["#gate-stats", "#distance-stats", "#short-long-dist"];
@@ -48,12 +50,51 @@ function appendData(stats) {
     }
 }
 
+function add_drivers(){
+    var main_div = document.querySelector(".select-drivers")
+    for(var i = 0; i < drivers.length; i++){
+        name = drivers[i]["name"];
+        var div = document.createElement("div")
+        main_div.appendChild(div)
+        var label = document.createElement("label");
+        label.innerHTML = name;
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = name;
+        checkbox.value = name;
+        checkbox.name = name;
+        checkbox.dataset.idx = i;
+        checkbox.className += "select-driver";
+        checkbox.checked = true;
+        div.appendChild(checkbox);
+        div.appendChild(label);
+    }
+}
+
+document.querySelector('.select-drivers').addEventListener("change", (event)=> {
+        var checkboxes = document.querySelectorAll(".select-driver");
+        var num_checkboxes = checkboxes.length;
+        var selections = [num_checkboxes]
+        checkboxes.forEach(element => {
+        var idx = element.dataset.idx
+        var checked = element.checked;
+        selections[idx] = checked;
+    });
+    selected_drivers = []
+    for(var i=0; i<drivers.length; i++){
+        if(selections[i] == true){
+            selected_drivers.push(drivers[i]);
+        }
+    }
+    console.log(selected_drivers);
+});
+
 
 let gates = true;
 document.querySelector('#consider-gates').addEventListener("change", (event)=> gates = event.target.checked);
 
 let drivers_file;
-let drivers;
+let input_drivers;
 document.querySelector('#drivers').addEventListener("change", (event) => {
     drivers_file = event.target.files;
     let drivers_reader = new FileReader();
@@ -62,7 +103,7 @@ document.querySelector('#drivers').addEventListener("change", (event) => {
         let drivers_data = event.target.result;
         let drivers_workbook = XLSX.read(drivers_data,{type:"binary"});
         let drivers_rowObject = XLSX.utils.sheet_to_row_object_array(drivers_workbook.Sheets[drivers_workbook.SheetNames[0]]);
-        drivers = JSON.stringify(drivers_rowObject,undefined,4);
+        input_drivers = JSON.stringify(drivers_rowObject,undefined,4);
     }
 });
 
@@ -82,7 +123,7 @@ document.querySelector('#students').addEventListener("change", (event) =>{
 });
 
 document.querySelector('#post').addEventListener("click", () => {
-    let data = {"drivers": drivers,
+    let data = {"drivers": input_drivers,
                 "students": students,
                 "consider_gates": gates,
                 "api_key": "ksdjf34234a23423",
@@ -99,11 +140,16 @@ document.querySelector('#post').addEventListener("click", () => {
     .then(result => {
         paths = result['paths']
         stats = result['stats']
+        drivers = result['drivers']
+        console.log(drivers)
         initMap(paths)
-        appendData(stats)
+        add_stats(stats)
+        add_drivers(drivers)
      })
     .catch((error) => console.error('Error:', error));
 });
+
+
 
 
 

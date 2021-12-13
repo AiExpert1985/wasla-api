@@ -71,6 +71,9 @@ class Person:
             score_lookup[key] = scores[i]
         return score_lookup
 
+    def serialize(self):
+        raise NotImplementedError(self.__class__.__name__ + '.serialize')
+
     def __str__(self):
         return f"Person:<{self.get_location().x}, {self.get_location().y}>"
 
@@ -243,6 +246,15 @@ class Driver(Person):
             self.wait_time = sum(diffs)
         return self.wait_time
 
+    def serialize(self):
+        x, y = self.get_coords()
+        path = []
+        for loc in self.get_route()[0]:
+            x, y = loc.get_coords()
+            path.append({'lat': y, 'lng': x})
+        students = [student.serialize() for student in self.picked_students()]
+        return {"name": self.get_name(), "coords": {'lat': y, 'lng': x}, "dist": self.get_route()[1], "path": path, "students": students}
+
     def __str__(self):
         return f"Driver:<{self.get_location().x},{self.get_location().y}>"
 
@@ -317,6 +329,15 @@ class Student(Person):
     def set_preferences(self, drivers):
         self.preferences = self.sorted_by_criterion(drivers, "final_score", flipped=True)
         self.iterable_preferences = iter(self.preferences.copy())
+
+    def serialize(self):
+        x, y = self.get_coords()
+        return {
+            "name": self.get_name(),
+            "coords": {'lat': y, 'lng': x},
+            "gate": self.get_gate_name(),
+            "driver": self.current_driver().get_name()
+        }
 
     def __str__(self):
         return f"Student: [<{self.get_location().x},{self.get_location().y}> @ {self.leave_time}]"
