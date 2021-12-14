@@ -26,7 +26,7 @@ function initMap() {
                                 strokeWeight: 2.0,
                                 });
         // show driver locations
-        var driver_coordinates = selected_drivers[i]["path"][0];
+        var driver_coordinates = selected_drivers[i]["coords"];
         new google.maps.Marker({
             position: driver_coordinates,
             map,
@@ -69,7 +69,6 @@ function add_drivers(){
     document.querySelector(".all-drivers").checked = true;
     var main_div = document.querySelector(".select-drivers")
     for(var i = 0; i < drivers.length; i++){
-        console.log(drivers[i]["coords"])
         name = drivers[i]["name"];
         var div = document.createElement("div")
         main_div.appendChild(div)

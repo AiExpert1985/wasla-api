@@ -14,7 +14,7 @@ def read_data(drivers_data, students_data, center_coords):
     num_gates = students_df['gate_group'].max() + 1
     drivers = []
     driver_names = []
-    # drivers_df = drivers_df.sample(30, replace=False)  # randomly choose 50 drivers for better testing
+    drivers_df = drivers_df.sample(30, replace=False)  # randomly choose 50 drivers for better testing
     for index, row in drivers_df.iterrows():
         id = row['id']
         x = row['x']
@@ -25,7 +25,7 @@ def read_data(drivers_data, students_data, center_coords):
         loc = Location(x, y, center_coords)
         drivers.append(Driver(id, loc, center_coords, name, district, num_gates))
     students = []
-    # students_df = students_df.sample(150, replace=False)  # randomly choose 50 drivers for better testing
+    students_df = students_df.sample(150, replace=False)  # randomly choose 50 drivers for better testing
     for index, row in students_df.iterrows():
         id = row['id']
         x = row['x']

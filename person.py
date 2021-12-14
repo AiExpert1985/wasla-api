@@ -251,16 +251,17 @@ class Driver(Person):
         x, y = self.get_coords()
         path = []
         for loc in self.get_route()[0]:
-            x, y = loc.get_coords()
-            path.append({'lat': y, 'lng': x})
+            point_x, point_y = loc.get_coords()
+            path.append({'lat': point_y, 'lng': point_x})
         students = [student.serialize() for student in self.picked_students()]
-        return {"name": self.get_name(),
-                "coords": {'lat': round(y, 7), 'lng': round(x, 7)},
-                "dist": round(self.get_route()[1], 2),
-                "path": path,
-                "students": students,
-                "district": self.get_district(),
-                }
+        serialized = {"name": self.get_name(),
+                        "coords": {'lat': round(y, 5), 'lng': round(x, 5)},
+                        "dist": round(self.get_route()[1], 2),
+                        "path": path,
+                        "students": students,
+                        "district": self.get_district(),
+                        }
+        return serialized
 
     def __str__(self):
         return f"Driver:<{self.get_location().x},{self.get_location().y}>"
@@ -341,7 +342,7 @@ class Student(Person):
         x, y = self.get_coords()
         return {
             "name": self.get_name(),
-            "coords": {'lat': round(y, 7), 'lng': round(x, 7)},
+            "coords": {'lat': round(y, 5), 'lng': round(x, 5)},
             "gate_name": self.get_gate_name(),
             "driver": self.current_driver().get_name(),
             "district": self.get_district(),
