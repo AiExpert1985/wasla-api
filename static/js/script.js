@@ -226,7 +226,7 @@ function json_to_array(drivers){
                               students[j]["district"],
                               students[j]["coords"]["lng"],
                               students[j]["coords"]["lat"],
-                              students[j]["time"],
+                              "",
                               students[j]["gate_group"],
                               students[j]["gate_name"],
                               students[j]["phone"],

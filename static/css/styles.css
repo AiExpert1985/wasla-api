@@ -3,9 +3,11 @@ body {
     margin: 0;
 }
 
+/* start of grid and its elements */
+
 .container {
     display: grid;
-    grid-template-columns: 2fr 6fr 2fr;
+    grid-template-columns: 2fr 6fr 0.5fr 2fr;
     grid-template-rows: 1fr 0.5fr 5fr 10fr 0.5fr;
     height: 100vh;
 }
@@ -21,6 +23,80 @@ body {
     grid-template-columns: 1fr 1fr;
     z-index:1;
 }
+
+.form {
+    margin: 50px 0px 0px 20px;
+    padding: 20px;
+    background-color: rgba(60, 60, 60, 0.8);
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
+    z-index:1;
+    align-self: start;
+    border-radius: 3%;
+    color: white:
+}
+
+.stats{
+    margin: 0px 0px 50px 20px;
+    padding: 10px;
+    grid-column: 1 / 2;
+    grid-row: 3 / 5;
+    z-index:1;
+    background-color: rgba(60, 60, 60, 0.8);
+    align-self: end;
+    border-radius: 3%;
+    color: #FFF;
+}
+
+.map {
+    margin: 10px;
+    grid-column: 1 / -1;
+    grid-row: 1 / 5;
+}
+
+.select-groups {
+    margin: 15px 31px 1px 0px;
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+    z-index: 1;
+    background-color: rgba(60, 60, 60, 0.8);
+    border-radius: 1%;
+    padding: 15px 15px 15px 15px;
+    color: #FFF;
+    align-self: end;
+}
+
+.select-drivers{
+    margin: 0px 15px 15px 0px;
+    grid-column: 4 / 5;
+    grid-row: 3 / 5;
+    z-index:1;
+    background-color: rgba(60, 60, 60, 0.8);
+    border-radius: 1%;
+    padding: 10px;
+    color: #FFF;
+    overflow-y:auto
+}
+
+.save {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    z-index: 1;
+    margin: 25px 25px 0px 0px;
+    align-self: start;
+}
+
+.footer {
+    grid-column: 1 / -1;
+    grid-row: 5 / 6;
+    color: #000080;
+    font-size: 0.75rem;
+    display: grid;
+    align-self: center;
+    justify-self: center;
+}
+
+/* end of grid and its elements */
 
 .header h1 {
     align-self: center;
@@ -57,18 +133,6 @@ body {
   margin-left: 20px;
 }
 
-.form {
-    margin: 20px 0px 0px 20px;
-    padding: 20px;
-    background-color: rgba(60, 60, 60, 0.8);
-    grid-column: 1 / 2;
-    grid-row: 2 / 4;
-    z-index:1;
-    align-self: start;
-    border-radius: 3%;
-    color: white:
-}
-
 .form div {
     margin: 10px;
     font-size: 1.2rem;
@@ -93,53 +157,12 @@ body {
     cursor: pointer;
 }
 
-.stats{
-    margin: 0px 0px 25px 20px;
-    padding: 10px;
-    grid-column: 1 / 2;
-    grid-row: 3 / 5;
-    z-index:1;
-    background-color: rgba(60, 60, 60, 0.8);
-    align-self: end;
-    border-radius: 3%;
-    color: #FFF;
-}
-
 .stats div {
     margin: 10px;
 }
 
-.map {
-    margin: 10px;
-    grid-column: 1 / -1;
-    grid-row: 1 / 5;
-}
-
-.select-groups {
-    margin: 15px 31px 1px 0px;
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
-    z-index: 1;
-    background-color: rgba(60, 60, 60, 0.8);
-    border-radius: 1%;
-    padding: 15px;
-    color: #FFF;
-}
-
 .select-groups label {
     margin: 5px;
-}
-
-.select-drivers{
-    margin: 0px 15px 15px 0px;
-    grid-column: 3 / 4;
-    grid-row: 3 / 5;
-    z-index:1;
-    background-color: rgba(60, 60, 60, 0.8);
-    border-radius: 1%;
-    padding: 10px;
-    color: #FFF;
-    overflow-y:auto
 }
 
 .select-drivers div {
@@ -147,27 +170,23 @@ body {
 }
 
 .select-drivers label {
-    margin: 10px;
+    margin: 0px;
 }
 
-.save {
-    grid-column: -2 / -1;
-    grid-row: 2/3;
-    align-self: start;
-    justify-self: end;
-    z-index: 2;
-    margin: 25px 40px 0px 0px;
+.save-button {
+	width: 115px;
+	height: 45px;
+	margin: 0;
+	padding: 0;
+	opacity: 0.7;
 }
 
-.footer {
-    grid-column: 1 / -1;
-    grid-row: 5 / 6;
-    color: #000080;
-    font-size: 0.75rem;
-    display: grid;
-    align-self: center;
-    justify-self: center;
+.save-button:hover {
+	opacity: 1.0;
+	cursor: pointer;
 }
+
+
 
 
 
