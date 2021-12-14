@@ -193,11 +193,70 @@ document.querySelector('#post').addEventListener("click", () => {
 });
 
 
+// Below code related to saving results as excel file
 
+function json_to_array(drivers){
+    var drivers_arr = [];
+    var column_titles = ["id", "name", "district", "x", "y", "leave_time", "gate_group", "gate_name",
+                         "phone", "friends", "driver", "x", "y", "district", "dist", "duration"]
+    drivers_arr.push(column_titles);
+    for(var i=0; i<drivers.length; i++){
+        var driver_name = drivers[i]["name"];
+        var driver_coords = drivers[i]["coords"];
+        var driver_distance = drivers[i]["dist"];
+        var driver_district = drivers[i]["district"];
+        var students = drivers[i]["students"];
+        for(var j=0; j<4; j++){
+            if(j >= students.length){drivers_arr.push([
+                                      (i*4)+j+1,
+                                      "","","","","","","","","",
+                                      driver_name,
+                                      driver_coords["lng"],
+                                      driver_coords["lat"],
+                                      driver_district,
+                                      driver_distance,
+                                      "",
+                                      ]);
+            }
+            else{drivers_arr.push([
+                              (i*4)+j+1,
+                              students[j]["name"],
+                              students[j]["district"],
+                              students[j]["coords"]["lng"],
+                              students[j]["coords"]["lat"],
+                              students[j]["time"],
+                              students[j]["gate_group"],
+                              students[j]["gate_name"],
+                              students[j]["phone"],
+                              "",
+                              driver_name,
+                              driver_coords["lng"],
+                              driver_coords["lat"],
+                              driver_district,
+                              driver_distance,
+                              "",
+                              ]);
+            }
+        }
+    }
+    return(drivers_arr);
+}
 
+function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
 
+function save_excel(){
+    var wb = XLSX.utils.book_new();
+    wb.SheetNames.push("Drivers");
+	var drivers_arr = json_to_array(drivers);
+    var ws = XLSX.utils.aoa_to_sheet(drivers_arr);
+    wb.Sheets["Drivers"] = ws;
+    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Drivers.xlsx');
+}
 
-
-
-
-
+document.querySelector(".save").addEventListener("click", () => save_excel());

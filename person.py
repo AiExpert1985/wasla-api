@@ -254,10 +254,11 @@ class Driver(Person):
             path.append({'lat': y, 'lng': x})
         students = [student.serialize() for student in self.picked_students()]
         return {"name": self.get_name(),
-                "coords": {'lat': y, 'lng': x},
-                "dist": self.get_route()[1],
+                "coords": {'lat': round(y, 7), 'lng': round(x, 7)},
+                "dist": round(self.get_route()[1], 2),
                 "path": path,
-                "students": students
+                "students": students,
+                "district": self.get_district(),
                 }
 
     def __str__(self):
@@ -339,9 +340,13 @@ class Student(Person):
         x, y = self.get_coords()
         return {
             "name": self.get_name(),
-            "coords": {'lat': y, 'lng': x},
-            "gate": self.get_gate_name(),
-            "driver": self.current_driver().get_name()
+            "coords": {'lat': round(y, 7), 'lng': round(x, 7)},
+            "gate_name": self.get_gate_name(),
+            "driver": self.current_driver().get_name(),
+            "district": self.get_district(),
+            "phone": self.get_phone(),
+            "gate_group": self.get_gate_group(),
+            "time": self.get_time(),
         }
 
     def __str__(self):

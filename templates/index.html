@@ -13,7 +13,7 @@
 
         <div class="container">
             <div class="header">
-              <h1>E&#x15F;tirakat</h1>
+              <h1>E&#x15F;tirak@y</h1>
               <ul class="nav">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">About</a></li>
@@ -28,6 +28,7 @@
                 </div>
                 <div><button class="post" id="post">post</button></div>
             </div>
+            <div><button class="save">Save</button></div>
             <div class="map" id="map"></div>
             <div class="stats" id="stats">
                 <div id="distance-stats"></div>
@@ -45,6 +46,7 @@
     </body>
     <script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/xlsx.full.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/FileSaver.js')}}"></script>
     <!-- google map api -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1gxbKg2bwRVCo_7Z-SLnmea8CGcoQCKk&callback=initMap&libraries=&v=weekly" async></script>
 
