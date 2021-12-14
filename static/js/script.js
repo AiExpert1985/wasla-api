@@ -26,20 +26,73 @@ function initMap() {
                                 strokeWeight: 2.0,
                                 });
         // show driver locations
-        var driver_coordinates = selected_drivers[i]["coords"];
-        new google.maps.Marker({
-            position: driver_coordinates,
-            map,
-//            label: selected_drivers[i]["name"],
+        var driver_marker = new google.maps.Marker({
+                position: selected_drivers[i]["coords"],
+                map,
         });
-        // show driver locations for each driver
+
+        // display info when clicking driver icon
+        const driver_info =
+            '<div class="icon-info" dir="rtl">' +
+                    '<h2 id="firstHeading" class="firstHeading">' + selected_drivers[i]['name'] + '</h1>' +
+                    '<div id="bodyContent">' +
+                        '<p dir="rtl"> الصفة : &nbsp سائق</p>' +
+                        '<p dir="rtl"> المنطقة : &nbsp' + selected_drivers[i]['district'] + '</p>' +
+                        '<p dir="rtl"> المسافة : &nbsp' + selected_drivers[i]['dist'] + ' &nbsp كم </p>' +
+                     "</div>" +
+            "</div>";
+        const driver_info_window = new google.maps.InfoWindow({
+            content: driver_info,
+          });
+        driver_marker.addListener("click", () => {
+            // remove previous info box - this was created by me ?
+            info_div = document.querySelector(".icon-info");
+            if (info_div != null){
+                parent = info_div.parentNode.parentNode.parentNode.parentNode.parentNode;
+                parent.remove();
+            }
+            driver_info_window.open({
+              anchor: driver_marker,
+              map,
+              shouldFocus: true,
+            });
+         });
+        // show student locations for each driver
         var students = selected_drivers[i].students;
         for(var j=0; j<students.length; j++){
-            new google.maps.Marker({
-                position: students[j].coords,
-                map,
-                icon: icon_base + "library_maps.png",
-            });
+            student_marker = new google.maps.Marker({
+                                    position: students[j].coords,
+                                    map,
+                                    icon: icon_base + "library_maps.png",
+                            });
+            // display info when clicking student icon
+            const student_info =
+                '<div class="icon-info" dir="rtl">' +
+                        '<h2 id="firstHeading" class="firstHeading">' + students[j]['name'] + '</h1>' +
+                        '<div id="bodyContent">' +
+                            '<p dir="rtl"> الصفة : &nbsp طالب</p>' +
+                            '<p dir="rtl"> المنطقة : &nbsp' + students[j]['district'] + '</p>' +
+                            '<p dir="rtl"> البوابة : &nbsp' + students[j]['gate_name'] + '</p>' +
+                            '<p dir="rtl"> هاتف : &nbsp' + students[j]['phone'] + '</p>' +
+                            '<p dir="rtl"> السائق : &nbsp' + students[j]['driver'] + '</p>' +
+                         "</div>" +
+                "</div>";
+            const student_info_window = new google.maps.InfoWindow({
+                content: student_info,
+              });
+            student_marker.addListener("click", () => {
+                // remove previous info box - this was created by me ?
+                info_div = document.querySelector(".icon-info");
+                if (info_div != null){
+                    parent = info_div.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    parent.remove();
+                }
+                student_info_window.open({
+                  anchor: student_marker,
+                  map,
+                  shouldFocus: true,
+                });
+             });
         }
         driver_path.setMap(map)
     }
