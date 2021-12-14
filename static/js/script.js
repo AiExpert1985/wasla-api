@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.querySelector(".stats").hidden = true;
     document.querySelector(".select-drivers").hidden = true;
     document.querySelector(".select-groups").hidden = true;
+    document.querySelector(".save-button").hidden = true;
 });
 
 function initMap() {
@@ -64,6 +65,7 @@ function add_stats(stats) {
 function add_drivers(){
     document.querySelector(".select-drivers").hidden = false;
     document.querySelector(".select-groups").hidden = false;
+    document.querySelector(".save-button").hidden = false;
     document.querySelector(".all-drivers").checked = true;
     var main_div = document.querySelector(".select-drivers")
     for(var i = 0; i < drivers.length; i++){
@@ -259,4 +261,4 @@ function save_excel(){
     saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Drivers.xlsx');
 }
 
-document.querySelector(".save").addEventListener("click", () => save_excel());
+document.querySelector(".save-button").addEventListener("click", () => save_excel());
