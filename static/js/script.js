@@ -26,7 +26,7 @@ function initMap() {
                                 strokeWeight: 2.0,
                                 });
         // show driver locations
-        var driver_marker = new google.maps.Marker({
+        let driver_marker = new google.maps.Marker({
                 position: selected_drivers[i]["coords"],
                 map,
         });
@@ -61,7 +61,7 @@ function initMap() {
         // show student locations for each driver
         var students = selected_drivers[i].students;
         for(var j=0; j<students.length; j++){
-            student_marker = new google.maps.Marker({
+            let student_marker = new google.maps.Marker({
                                     position: students[j].coords,
                                     map,
                                     icon: icon_base + "library_maps.png",
