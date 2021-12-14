@@ -27,6 +27,7 @@ def algorithm_data():
     apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
     stats = statistics(students, drivers)
     serialized_drivers = [driver.serialize() for driver in drivers]
+    print(serialized_drivers)
     return jsonify(stats=stats, drivers=serialized_drivers)
 
 

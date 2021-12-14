@@ -19,11 +19,12 @@ def read_data(drivers_data, students_data, center_coords):
         id = row['id']
         x = row['x']
         y = row['y']
+        phone = str(row["phone"])
         name = row['name'].strip()
         driver_names.append(name)
         district = row['district']
         loc = Location(x, y, center_coords)
-        drivers.append(Driver(id, loc, center_coords, name, district, num_gates))
+        drivers.append(Driver(id, loc, center_coords, name, district, num_gates, phone))
     students = []
     students_df = students_df.sample(150, replace=False)  # randomly choose 50 drivers for better testing
     for index, row in students_df.iterrows():

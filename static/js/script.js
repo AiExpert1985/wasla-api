@@ -39,6 +39,7 @@ function initMap() {
                         '<p dir="rtl"> الصفة : &nbsp سائق</p>' +
                         '<p dir="rtl"> المنطقة : &nbsp' + selected_drivers[i]['district'] + '</p>' +
                         '<p dir="rtl"> المسافة : &nbsp' + selected_drivers[i]['dist'] + ' &nbsp كم </p>' +
+                        '<p dir="rtl"> هاتف : &nbsp' + selected_drivers[i]['phone'] + '</p>' +
                      "</div>" +
             "</div>";
         const driver_info_window = new google.maps.InfoWindow({
@@ -54,7 +55,7 @@ function initMap() {
             driver_info_window.open({
               anchor: driver_marker,
               map,
-              shouldFocus: true,
+              shouldFocus: false,
             });
          });
         // show student locations for each driver
@@ -252,13 +253,14 @@ document.querySelector('#post').addEventListener("click", () => {
 function json_to_array(drivers){
     var drivers_arr = [];
     var column_titles = ["id", "name", "district", "x", "y", "leave_time", "gate_group", "gate_name",
-                         "phone", "friends", "driver", "x", "y", "district", "dist", "duration"]
+                         "phone", "friends", "driver", "x", "y", "district", "dist", "duration", "phone"]
     drivers_arr.push(column_titles);
     for(var i=0; i<drivers.length; i++){
         var driver_name = drivers[i]["name"];
         var driver_coords = drivers[i]["coords"];
         var driver_distance = drivers[i]["dist"];
         var driver_district = drivers[i]["district"];
+        var driver_phone = drivers[i]["phone"];
         var students = drivers[i]["students"];
         for(var j=0; j<4; j++){
             if(j >= students.length){drivers_arr.push([
@@ -270,6 +272,7 @@ function json_to_array(drivers){
                                       driver_district,
                                       driver_distance,
                                       "",
+                                      driver_phone,
                                       ]);
             }
             else{drivers_arr.push([
@@ -289,6 +292,7 @@ function json_to_array(drivers){
                               driver_district,
                               driver_distance,
                               "",
+                              driver_phone,
                               ]);
             }
         }

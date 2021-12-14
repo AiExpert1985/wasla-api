@@ -4,7 +4,7 @@ from utils import *
 
 class Person:
 
-    def __init__(self, id, loc, center_coords, name, district):
+    def __init__(self, id, loc, center_coords, name, district, phone):
         self.id = id
         self.loc = loc
         self.preferences = []
@@ -12,12 +12,16 @@ class Person:
         self.center_coords = center_coords
         self.name = str(name)
         self.district = str(district)
+        self.phone = phone
 
     def get_name(self):
         return self.name
 
     def get_district(self):
         return self.district
+
+    def get_phone(self):
+        return self.phone
 
     def sorted_by_criterion(self, people, criterion, flipped=False):
         sort_func = getattr(self, criterion)
@@ -84,8 +88,8 @@ class Person:
 
 class Driver(Person):
 
-    def __init__(self, id, loc, center_coords, name, district, num_gates):
-        Person.__init__(self, id, loc, center_coords, name, district)
+    def __init__(self, id, loc, center_coords, name, district, num_gates, phone):
+        Person.__init__(self, id, loc, center_coords, name, district, phone)
         self.students = []
         self.student_dist_score_lookup = {}
         self.dist_score_lookup = {}
@@ -257,6 +261,7 @@ class Driver(Person):
         serialized = {"name": self.get_name(),
                         "coords": {'lat': round(y, 5), 'lng': round(x, 5)},
                         "dist": round(self.get_route()[1], 2),
+                        "phone": self.get_phone(),
                         "path": path,
                         "students": students,
                         "district": self.get_district(),
@@ -270,12 +275,11 @@ class Driver(Person):
 class Student(Person):
     def __init__(self,id, loc, center_coords, leave_time, name, district, gate_group,
                  phone, friend_names):
-        Person.__init__(self, id, loc, center_coords, name, district)
+        Person.__init__(self, id, loc, center_coords, name, district, phone)
         self.leave_time = str(leave_time)
         self.driver_dist_score_lookup = {}
         self.gate_name = gate_group
         self.gate_group = int(gate_group)
-        self.phone = phone
         self.driver = None
         self.friend_names = friend_names
         self.friends = []
@@ -294,9 +298,6 @@ class Student(Person):
 
     def get_time(self):
         return self.leave_time
-
-    def get_phone(self):
-        return self.phone
 
     def get_gate_name(self):
         return self.gate_name
