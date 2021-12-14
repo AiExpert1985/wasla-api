@@ -67,6 +67,7 @@ function add_drivers(){
     document.querySelector(".all-drivers").checked = true;
     var main_div = document.querySelector(".select-drivers")
     for(var i = 0; i < drivers.length; i++){
+        console.log(drivers[i]["coords"])
         name = drivers[i]["name"];
         var div = document.createElement("div")
         main_div.appendChild(div)
@@ -181,7 +182,6 @@ document.querySelector('#post').addEventListener("click", () => {
     })
     .then(response => response.json())
     .then(result => {
-        paths = result['paths'];
         stats = result['stats'];
         drivers = result['drivers'];
         selected_drivers = drivers;

@@ -28,7 +28,7 @@ def algorithm_data():
     stats = statistics(students, drivers)
     paths = routes(drivers)
     serialized_drivers = [driver.serialize() for driver in drivers]
-    return jsonify(paths=paths, stats=stats, drivers=serialized_drivers)
+    return jsonify(stats=stats, drivers=serialized_drivers)
 
 
 @app.route('/algorithm/api', methods=['POST'])

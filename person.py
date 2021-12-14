@@ -5,6 +5,7 @@ from utils import *
 class Person:
 
     def __init__(self, id, loc, center_coords, name, district):
+        self.id = id
         self.loc = loc
         self.preferences = []
         self.iterable_preferences = None
