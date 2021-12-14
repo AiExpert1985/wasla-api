@@ -29,6 +29,7 @@ function initMap() {
         let driver_marker = new google.maps.Marker({
                 position: selected_drivers[i]["coords"],
                 map,
+//                icon: "static/images/car_marker.png",
         });
 
         // display info when clicking driver icon
