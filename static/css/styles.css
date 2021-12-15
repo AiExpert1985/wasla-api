@@ -7,8 +7,8 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: 2fr 6fr 0.5fr 2fr;
-    grid-template-rows: 1fr 0.5fr 5fr 10fr 0.5fr;
+    grid-template-columns: 2.25fr 6fr 0.5fr 2fr;
+    grid-template-rows: 1fr0.5fr 5fr 10fr 0.5fr;
     height: 100vh;
 }
 
@@ -67,7 +67,7 @@ body {
 }
 
 .select-drivers{
-    margin: 0px 15px 15px 0px;
+    margin: 0px 15px 25px 0px;
     grid-column: 4 / 5;
     grid-row: 3 / 5;
     z-index:1;
