@@ -26,8 +26,11 @@ function initMap() {
                                 strokeWeight: 2.0,
                                 });
         // show driver locations
+        let driver_lat = selected_drivers[i]["coords"]["lat"];
+        let driver_lng = selected_drivers[i]["coords"]["lng"];
+        driver_lng = driver_lng + 0.0015* Math.random()
         let driver_marker = new google.maps.Marker({
-                position: selected_drivers[i]["coords"],
+                position: {"lat": driver_lat, "lng": driver_lng},
                 map,
 //                icon: "static/images/car_marker.png",
         });
@@ -62,8 +65,12 @@ function initMap() {
         // show student locations for each driver
         var students = selected_drivers[i].students;
         for(var j=0; j<students.length; j++){
+            let student_lat = students[j]["coords"]["lat"];
+            let student_lng = students[j]["coords"]["lng"];
+            student_lat = student_lat + 0.0002* Math.random()
+            student_lng = student_lng + 0.002* Math.random()
             let student_marker = new google.maps.Marker({
-                                    position: students[j].coords,
+                                    position: {"lat": student_lat, "lng": student_lng},
                                     map,
                                     icon: icon_base + "library_maps.png",
                             });
