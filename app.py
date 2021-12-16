@@ -2,12 +2,14 @@ from models import *
 from flask import render_template, jsonify, request
 import json
 from processing import *
+from utils import write_to_log
 
 db.init_app(app)
 
 
 @app.route('/')
 def home_page():
+    write_to_log("proooo")
     return render_template('index.html')
 
 

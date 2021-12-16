@@ -8,7 +8,7 @@ body {
 .container {
     display: grid;
     grid-template-columns: 2.25fr 6fr 0.5fr 2fr;
-    grid-template-rows: 1fr0.5fr 5fr 10fr 0.5fr;
+    grid-template-rows: 1fr 0.5fr 5fr 10fr 0.5fr;
     height: 100vh;
 }
 

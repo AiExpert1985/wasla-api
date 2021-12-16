@@ -110,3 +110,13 @@ def cubed_probability(vector):
 def power_4_probability(vector):
     squared_values = np.power(vector, 4)
     return squared_values/np.sum(squared_values)
+
+
+def write_to_log(line):
+    try:
+        f = open('log.txt', 'w')
+        f.write(line)
+        f.close()
+    except Exception as e:
+        print("error during writing to log file")
+        print(e)
