@@ -28,20 +28,20 @@
                 </div>
                 <div><button class="post" id="post">post</button></div>
             </div>
-            <div class="save">
+            <div class="save" hidden>
                 <img class="save-button" src="{{url_for('static', filename='images/save.PNG')}}">
             </div>
             <div class="map" id="map"></div>
-            <div class="stats" id="stats">
+            <div class="stats" id="stats" hidden>
                 <div id="distance-stats"></div>
                 <div id="gate-stats"></div>
                 <div id="short-long-dist"></div>
             </div>
-            <div class="select-groups">
+            <div class="select-groups" hidden>
                 <input class="all-drivers" type="checkbox" id="all-drivers" name="all-drivers" value="all-drivers" checked="true">
                 <label for="all-drivers">Select All Drivers</label>
             </div>
-            <div class="select-drivers"></div>
+            <div class="select-drivers" hidden></div>
             <div class="footer"> &copy; 2021 Mnka Intelligent Services  </div>
         </div>
 

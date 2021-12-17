@@ -2,10 +2,6 @@ var drivers;
 var selected_drivers = [];
 
 document.addEventListener('DOMContentLoaded', function(){
-    document.querySelector(".stats").hidden = true;
-    document.querySelector(".select-drivers").hidden = true;
-    document.querySelector(".select-groups").hidden = true;
-    document.querySelector(".save-button").hidden = true;
 });
 
 function initMap() {
