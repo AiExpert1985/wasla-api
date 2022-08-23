@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+        		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+        <title>E&#x15F;tirak@</title>
+    </head>
+
+    <body>
+
+        <div class="container">
+            <div class="header">
+              <h1>E&#x15F;tirak@</h1>
+              <ul class="nav">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+              </ul>
+            </div>
+            <div class="form" id="form">
+                <div class="form-drivers">
+                    <input type="file" id="upload-drivers" accept=".xls,.xlsx">
+                    <label for="upload-drivers" class="custom-upload" id="upload-drivers-label">Select Drivers File</label>
+                </div>
+                <div class="form-students">
+                    <input type="file" id="upload-students" accept=".xls,.xlsx">
+                    <label for="upload-students" class="custom-upload" id="upload-students-label">Select Students file</label>
+                </div>
+                <div class="form-key">
+                    <input type="text" id="key" class="key" placeholder="Enter Authentication Key">
+                    <label for="key"></label>
+                </div>
+                <div class="form-gate">
+                    <input type="checkbox" id="consider-gates" name="gates" value="gates" checked>
+                    <label for="consider-gates" class="form-label">Consider Gates ?</label>
+                </div>
+                <div>
+                    <button class="post" id="post">Upload</button>
+                </div>
+            </div>
+            <div class="save" hidden>
+                <img class="save-button" src="{{url_for('static', filename='images/save.png')}}" alt="save button">
+            </div>
+            <div class="map" id="map"></div>
+            <div class="stats" id="stats" hidden>
+                <div id="distance-stats"></div>
+                <div id="gate-stats"></div>
+                <div id="short-long-dist"></div>
+                <div id="drivers-students"></div>
+            </div>
+            <div class="driver-checkboxes" hidden>
+                <div class="select-groups">
+                    <div class="week-days">
+                        <span class="drivers-week-day" data-day="sa">Sa</span>
+                        <span class="drivers-week-day" data-day="su">Su</span>
+                        <span class="drivers-week-day" data-day="mo">Mo</span>
+                        <span class="drivers-week-day" data-day="tu">Tu</span>
+                        <span class="drivers-week-day" data-day="we">We</span>
+                        <span class="drivers-week-day" data-day="th">Th</span>
+                    </div>
+                    <div>
+                        <input class="all-drivers" type="checkbox" id="all-drivers" name="all-drivers" value="all-drivers">
+                        <label for="all-drivers">Select all drivers</label>
+                    </div>
+                    <div>
+                        <input class="show-selected-only" type="checkbox" id="show-selected-only" name="show-selected-only" value="all-drivers">
+                        <label for="show-selected-only">Only show selected</label>
+                    </div>
+                </div>
+                <div class="select-drivers"></div>
+
+            </div>
+            <div class="footer"> &copy; 2021 Mnka Intelligent Services  </div>
+        </div>
+
+    </body>
+    <script type="text/javascript" src="{{url_for('static', filename='js/script.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/xlsx.full.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/FileSaver.js')}}"></script>
+    <!-- google map api -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1gxbKg2bwRVCo_7Z-SLnmea8CGcoQCKk&callback=initMap&libraries=&v=weekly" async></script>
+
+</html>
