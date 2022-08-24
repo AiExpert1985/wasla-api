@@ -3,7 +3,6 @@ import googlemaps
 
 
 class Location:
-
     def __init__(self, x, y, center_coords=(0, 0)):
         self.x = x
         self.y = y
@@ -36,26 +35,34 @@ class Location:
         self.dist_to_locations[coords] = dist
         return dist
 
-    @static
-    def reverse_coordinates(x, y):
-        temp = x
-        x = y
-        y = temp
-        return x, y
-
-    def google_distance(self, origin, destination):
+    def google_distance(self, x, y):
+        """ Calculate google distance for two points """
         gmaps = googlemaps.Client(key=self.google_api_key)
+        origin = (self.y, self.x)
+        destination = (y, x)
         result = gmaps.distance_matrix(origin, destination)['rows'][0]['elements']
         distance = result['distance']['value']/1000
         return distance
 
-    def google_distance_matrix(self, origin, destinations):
-        # origin = tuple; example (36.3648284, 43.2003099)
-        # destinations = list of tuples; example [(36.4101953, 43.1859467), (36.3631696, 43.1848604)]
+    def populate_dist_lookup_with_google(self, locations):
+        """ Calculate google distance for a point verses multiple points"""
+        google_limit = 25  # google limited maximum number of elements per request
+        origin = (self.y, self.x)
+        locations = [(loc.y, loc.x) for loc in locations]
+        len_last_batch = len(locations) % google_limit
+        destinations_batches = []
+        for i in range(0, len(locations[:-len_last_batch]), google_limit):
+            destinations_batches.append(locations[i:i+google_limit])
+        destinations_batches.append(locations[-len_last_batch:])
         gmaps = googlemaps.Client(key=self.google_api_key)
-        result = gmaps.distance_matrix(origin, destinations)['rows'][0]['elements']
-        distances = [item['distance']['value']/1000 for item in result]
-        return distances
+        distances = []
+        for destinations in destinations_batches:
+            result = gmaps.distance_matrix(origin, destinations)['rows'][0]['elements']
+            distances.extend([item['distance']['value']/1000 for item in result])
+        for idx, dist in enumerate(distances):
+            coords = locations[idx]
+            if not self.dist_to_locations.get(coords):
+                self.dist_to_locations[coords] = dist
 
     def manhattan_distance(self, x, y):
         dx = np.abs(self.x - x)
@@ -63,11 +70,12 @@ class Location:
         distance = 100 * (dx + dy)
         return distance
 
-    def distance(self, x, y, method='manhattan'):
-        if method == 'manhattan':
-            return self.manhattan_distance(x, y)
-        else:
-            return self.google_distance(x, y)
+    def distance(self, x, y):
+        try:
+            dist = self.google_distance(x, y)
+        except:
+            dist = self.manhattan_distance(x, y)
+        return dist
 
 
     def __str__(self):

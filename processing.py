@@ -6,16 +6,25 @@ from debug_numbers import print_scores_to_file
 from boost import *
 import time
 from collections import Counter
+from tqdm import tqdm
+
+
+def populate_dist_lookup_with_google(drivers, students):
+    print("Populating lookup tables with google distances ...")
+    for driver in tqdm(drivers):
+        student_locations = [student.loc for student in students]
+        driver.loc.populate_dist_lookup_with_google(student_locations)
 
 
 def process_data(drivers_df, students_df, center_coords, consider_gates):
     drivers, students = read_data(drivers_df, students_df, center_coords)
+    populate_dist_lookup_with_google(drivers, students)
     week_days = {"sa", "su", "mo", "tu", "we", "th"}
     student_columns = list(students_df.columns)
-    # when students are not huge considering gates would result in bad pickups, so consider_gates is deactivated
+    # when number of students is small considering gates would result in bad pickups, so consider_gates is deactivated
     if len(students_df) < 200:
         consider_gates = False
-        # print("consider_gates was deactivated on due to low number of students")
+        print("consider_gates was deactivated due to small number of students")
     if any(ele in week_days for ele in student_columns):  # if any of week days are in students columns
         # drivers, students = daily_matching(drivers, students, consider_gates, students_df)
         drivers, students = new_daily_matching(drivers, students, consider_gates, students_df)
@@ -30,7 +39,7 @@ def read_data(drivers_df, students_df, center_coords):
     num_gates = int(students_df['gate_group'].max() + 1)
     drivers = []
     driver_names = []
-    # drivers_df = drivers_df.sample(30, replace=False)  # randomly choose 50 drivers for better testing
+    # drivers_df = drivers_df.sample(30, replace=False)  # randomly choose 30 drivers for better testing
     for index, row in drivers_df.iterrows():
         drivers_id = index  # instead of row['id']
         x = row['x']
@@ -42,7 +51,7 @@ def read_data(drivers_df, students_df, center_coords):
         loc = Location(x, y, center_coords)
         drivers.append(Driver(drivers_id, loc, center_coords, name, district, num_gates, phone))
     students = []
-    # students_df = students_df.sample(150, replace=False)  # randomly choose 50 drivers for better testing
+    # students_df = students_df.sample(120, replace=False)  # randomly choose 120 drivers for better testing
     for index, row in students_df.iterrows():
         student_id = index  # instead of row['id']
         x = row['x']
@@ -193,6 +202,7 @@ def create_preferences(students, drivers, consider_dist, consider_gate, consider
 
 
 def apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False):
+    print("Applying algorithm ...")
     t0 = time.time()
     # remove pre-picked students before applying the algorithm
     pre_picked_students = []
@@ -227,7 +237,7 @@ def apply_algorithm(students, drivers, consider_gates, print_to_scores_file=Fals
     # --------
     t1 = time.time()
     execution_time = t1 - t0
-    # print(f"\nTotal execution time = {round(execution_time, 2)} seconds")
+    print(f"\nTotal execution time = {round(execution_time, 2)} seconds")
     if print_to_scores_file:
         print_scores_to_file(students, drivers)
     return drivers, students
@@ -243,7 +253,7 @@ def statistics(students, drivers):
     drivers_not_full = [driver for driver in drivers if len(driver.picked_students()) < 4]
     message_drivers_not_full = f"Not Full Drivers  =  {len(drivers_not_full)}"
     stats['num_drivers_not_full'] = message_drivers_not_full
-    # I removed unpicked_students because it cause a problem in weekly matching
+    # I removed unpicked_students because it causes a problem in weekly matching
     # unpicked_students = [student for student in students if student.driver is None]
     # message_unpicked_students = f"Unpicked Students  =  {len(unpicked_students)}"
     # stats['num_unpicked_students'] = message_unpicked_students
