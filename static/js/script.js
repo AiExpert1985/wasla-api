@@ -142,6 +142,7 @@ function initMap() {
         for(let i=0; i<selected_drivers.length; i++){
             let random_color = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6);
             let path_coordinates = selected_drivers[i]["path"];
+            console.log(path_coordinates);
             let driver_path = new google.maps.Polyline({
                 path: path_coordinates,
                 geodesic: true,

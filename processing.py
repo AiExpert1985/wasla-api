@@ -10,9 +10,9 @@ from tqdm import tqdm
 
 
 def populate_dist_lookup_with_google(drivers, students):
+    print("Populating lookup tables with google distances ...")
     center_coords = drivers[0].center_coords
     center_loc = Location(center_coords[0], center_coords[1], center_coords)
-    print("Populating lookup tables with google distances ...")
     driver_locations = [driver.loc for driver in drivers]
     student_locations = [student.loc for student in students]
     for driver in tqdm(drivers):

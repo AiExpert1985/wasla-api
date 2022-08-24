@@ -286,7 +286,7 @@ class Driver(Person):
         path = []
         for loc in self.get_route()[0]:
             point_x, point_y = loc.get_coords()
-            path.append({'lat': point_y, 'lng': point_x})
+            path.append({'lat': point_x, 'lng': point_y})
         students = [student.serialize() for student in self.picked_students()]
         serialized = {"name": self.get_name(),
                       "coords": {'lat': round(x, 5), 'lng': round(y, 5)},
