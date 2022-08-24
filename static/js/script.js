@@ -334,7 +334,7 @@ document.querySelector('#post').addEventListener("click", () => {
                 "students": students,
                 "consider_gates": gates,
                 "api_key": api_key,
-                "center_coords": [43.146406822212754, 36.37665963355008]
+                "center_coords": [36.37665963355008, 43.146406822212754]
     };
     students = []
     drivers = [];

@@ -10,10 +10,16 @@ from tqdm import tqdm
 
 
 def populate_dist_lookup_with_google(drivers, students):
+    center_coords = drivers[0].center_coords
+    center_loc = Location(center_coords[0], center_coords[1], center_coords)
     print("Populating lookup tables with google distances ...")
+    driver_locations = [driver.loc for driver in drivers]
+    student_locations = [student.loc for student in students]
     for driver in tqdm(drivers):
-        student_locations = [student.loc for student in students]
         driver.loc.populate_dist_lookup_with_google(student_locations)
+    # finally, populate distances from center to both drivers and students
+    center_loc.populate_dist_lookup_with_google(driver_locations)
+    center_loc.populate_dist_lookup_with_google(student_locations)
 
 
 def process_data(drivers_df, students_df, center_coords, consider_gates):
@@ -39,7 +45,7 @@ def read_data(drivers_df, students_df, center_coords):
     num_gates = int(students_df['gate_group'].max() + 1)
     drivers = []
     driver_names = []
-    # drivers_df = drivers_df.sample(30, replace=False)  # randomly choose 30 drivers for better testing
+    # drivers_df = drivers_df.sample(15, replace=False)  # randomly choose fraction of drivers for better testing
     for index, row in drivers_df.iterrows():
         drivers_id = index  # instead of row['id']
         x = row['x']
@@ -51,7 +57,7 @@ def read_data(drivers_df, students_df, center_coords):
         loc = Location(x, y, center_coords)
         drivers.append(Driver(drivers_id, loc, center_coords, name, district, num_gates, phone))
     students = []
-    # students_df = students_df.sample(120, replace=False)  # randomly choose 120 drivers for better testing
+    # students_df = students_df.sample(60, replace=False)  # randomly choose fraction of students for better testing
     for index, row in students_df.iterrows():
         student_id = index  # instead of row['id']
         x = row['x']

@@ -289,7 +289,7 @@ class Driver(Person):
             path.append({'lat': point_y, 'lng': point_x})
         students = [student.serialize() for student in self.picked_students()]
         serialized = {"name": self.get_name(),
-                      "coords": {'lat': round(y, 5), 'lng': round(x, 5)},
+                      "coords": {'lat': round(x, 5), 'lng': round(y, 5)},
                       "dist": round(self.get_route()[1], 2),
                       "phone": self.get_phone(),
                       "path": path,
@@ -305,7 +305,7 @@ class Driver(Person):
             path = []
             for loc in self.get_route(val)[0]:
                 point_x, point_y = loc.get_coords()
-                path.append({'lat': point_y, 'lng': point_x})
+                path.append({'lat': point_x, 'lng': point_y})
             serialized[key] = {
                 "path": path,
                 "students": students
@@ -402,7 +402,7 @@ class Student(Person):
         x, y = self.get_coords()
         return {
             "name": self.get_name(),
-            "coords": {'lat': round(y, 5), 'lng': round(x, 5)},
+            "coords": {'lat': round(x, 5), 'lng': round(y, 5)},
             "gate_name": self.get_gate_name(),
             "driver": self.current_driver().get_name() if self.current_driver() else "No Driver",
             "district": self.get_district(),
