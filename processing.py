@@ -7,6 +7,7 @@ from boost import *
 import time
 from collections import Counter
 from tqdm import tqdm
+import math
 
 
 def populate_dist_lookup_with_google(drivers, students):
@@ -37,6 +38,7 @@ def process_data(drivers_df, students_df, center_coords, consider_gates):
     else:
         create_preferences(students, drivers, True, consider_gates, False, False)
         drivers, students = apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
+        drivers, students = remove_worst_drivers(drivers, students, consider_gates)
     return drivers, students
 
 
@@ -193,6 +195,27 @@ def new_daily_matching(drivers, students, consider_gates, students_df):
                 driver.add_picked_students_weekly(day, picked_students)
                 for student in picked_students:
                     student.add_driver_weekly(day, driver)
+    return drivers, students
+
+
+def remove_worst_drivers(drivers, students, consider_gates):
+    required_drivers = math.ceil(len(students)/4)
+    if required_drivers < len(drivers):
+        n_to_remove = len(drivers) - required_drivers
+        print(f"{n_to_remove} extra drivers have been removed")
+        scores = []
+        for driver in drivers:
+            scores.append(np.sum([driver.dist_score(student) for student in driver.students]))
+        drivers = np.array(drivers)
+        scores = np.array(scores)
+        sorted_drivers = np.flip(drivers[np.argsort(scores)])
+        drivers = sorted_drivers[:-n_to_remove]
+        for driver in drivers:
+            for student in driver.picked_students():
+                student.reset_calculations(False)
+            driver.reset_calculations()
+        create_preferences(students, drivers, True, consider_gates, False, False)
+        drivers, students = apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
     return drivers, students
 
 
