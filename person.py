@@ -147,12 +147,7 @@ class Driver(Person):
         return str(self.get_coords())
 
     def calculate_student_dist_scores(self, students):
-        # print(self.get_name())
         distances = [self.distance_to_center_through(student) for student in students]
-        # names = [student.get_name() for student in students]
-        # print(distances)
-        # print(names)
-        # print("........................")
         len_dist = len(distances)
         total_dist = np.sum(distances)
         scores = []
@@ -169,18 +164,12 @@ class Driver(Person):
         return self.student_dist_score_lookup[key]
 
     def calculate_dist_scores(self, students):
-        # print(f'Driver: {self.get_name()}')
         for student in students:
-            # print(f'--> {student.get_name()}')
             driver_dist_score = student.driver_dist_score(self)
-            # print(f'     driver_dist_score= {round(driver_dist_score, 4)}')
             student_dist_score = self.student_dist_score(student)
-            # print(f'     student_dist_score= {round(student_dist_score, 4)}')
             final_dist_score = driver_dist_score * student_dist_score
-            # print(f'     dist_score= {round(final_dist_score, 4)}')
             key = student.lookup_key()
             self.dist_score_lookup[key] = final_dist_score
-        # print("*******************************************************")
 
     def dist_score(self, student):
         key = student.lookup_key()
@@ -389,12 +378,7 @@ class Student(Person):
         return str(self.get_coords()) + self.get_time()
 
     def calculate_driver_dist_scores(self, drivers):
-        # print(self.get_name())
         distances = [self.distance_to_center_through_self(driver) for driver in drivers]
-        # names = [driver.get_name() for driver in drivers]
-        # print(distances)
-        # print(names)
-        # print("........................")
         len_dist = len(distances)
         total_dist = np.sum(distances)
         scores = []
