@@ -100,7 +100,7 @@ function initMap() {
             let student_lat = students[j]["coords"]["lat"];
             let student_lng = students[j]["coords"]["lng"];
             student_lat = student_lat + 0.0002* Math.random()
-            student_lng = student_lng + 0.002* Math.random()
+            student_lng = student_lng + 0.0002* Math.random()
             let student_marker = new google.maps.Marker({
                                     position: {"lat": student_lat, "lng": student_lng},
                                     map,
@@ -335,7 +335,7 @@ document.querySelector('#post').addEventListener("click", () => {
                 "students": students,
                 "consider_gates": gates,
                 "api_key": api_key,
-                "center_coords": [36.37665963355008, 43.146406822212754]
+                "center_coords": [36.37662971712588, 43.146043809536835]
     };
     students = []
     drivers = [];

@@ -63,22 +63,6 @@ class Person:
     def next_preference(self):
         return next(self.iterable_preferences)
 
-    def calculate_dist_sub_scores(self, people, criterion):
-        score_func = getattr(self, criterion)
-        score_lookup = {}
-        distances = [score_func(person) for person in people]
-        len_dist = len(distances)
-        total_dist = np.sum(distances)
-        scores = []
-        for i, person in enumerate(people):
-            dist = distances[i]
-            scores.append((total_dist - dist) / len_dist)
-        scores = softmax(scores)
-        for i, person in enumerate(people):
-            key = person.lookup_key()
-            score_lookup[key] = scores[i]
-        return score_lookup
-
     def serialize(self):
         raise NotImplementedError(self.__class__.__name__ + '.serialize')
 
@@ -163,19 +147,40 @@ class Driver(Person):
         return str(self.get_coords())
 
     def calculate_student_dist_scores(self, students):
-        self.student_dist_score_lookup = self.calculate_dist_sub_scores(students, "distance_to_center_through")
+        # print(self.get_name())
+        distances = [self.distance_to_center_through(student) for student in students]
+        # names = [student.get_name() for student in students]
+        # print(distances)
+        # print(names)
+        # print("........................")
+        len_dist = len(distances)
+        total_dist = np.sum(distances)
+        scores = []
+        for i, student in enumerate(students):
+            dist = distances[i]
+            scores.append((total_dist - dist) / len_dist)
+        scores = softmax(scores)
+        for i, student in enumerate(students):
+            key = student.lookup_key()
+            self.student_dist_score_lookup[key] = scores[i]
 
     def student_dist_score(self, student):
         key = student.lookup_key()
         return self.student_dist_score_lookup[key]
 
     def calculate_dist_scores(self, students):
+        # print(f'Driver: {self.get_name()}')
         for student in students:
+            # print(f'--> {student.get_name()}')
             driver_dist_score = student.driver_dist_score(self)
+            # print(f'     driver_dist_score= {round(driver_dist_score, 4)}')
             student_dist_score = self.student_dist_score(student)
-            dist_score = driver_dist_score * student_dist_score
+            # print(f'     student_dist_score= {round(student_dist_score, 4)}')
+            final_dist_score = driver_dist_score * student_dist_score
+            # print(f'     dist_score= {round(final_dist_score, 4)}')
             key = student.lookup_key()
-            self.dist_score_lookup[key] = dist_score
+            self.dist_score_lookup[key] = final_dist_score
+        # print("*******************************************************")
 
     def dist_score(self, student):
         key = student.lookup_key()
@@ -321,7 +326,7 @@ class Student(Person):
                  phone, friend_names):
         Person.__init__(self, student_id, loc, center_coords, name, district, phone)
         self.leave_time = str(leave_time)
-        self.driver_dist_score_lookup = {}
+        self.dist_score_lookup = {}
         self.gate_name = gate_group
         self.gate_group = int(gate_group)
         self.driver = None
@@ -332,7 +337,7 @@ class Student(Person):
     def reset_calculations(self, reset_driver_weekly=True):
         self.preferences = []
         self.iterable_preferences = None
-        self.driver_dist_score_lookup = {}
+        self.dist_score_lookup = {}
         self.driver = None
         if reset_driver_weekly:
             self.driver_weekly = {}
@@ -384,11 +389,26 @@ class Student(Person):
         return str(self.get_coords()) + self.get_time()
 
     def calculate_driver_dist_scores(self, drivers):
-        self.driver_dist_score_lookup = self.calculate_dist_sub_scores(drivers, "distance_to_center_through_self")
+        # print(self.get_name())
+        distances = [self.distance_to_center_through_self(driver) for driver in drivers]
+        # names = [driver.get_name() for driver in drivers]
+        # print(distances)
+        # print(names)
+        # print("........................")
+        len_dist = len(distances)
+        total_dist = np.sum(distances)
+        scores = []
+        for i, driver in enumerate(drivers):
+            dist = distances[i]
+            scores.append((total_dist - dist) / len_dist)
+        scores = softmax(scores)
+        for i, driver in enumerate(drivers):
+            key = driver.lookup_key()
+            self.dist_score_lookup[key] = scores[i]
 
     def driver_dist_score(self, driver):
         key = driver.lookup_key()
-        return self.driver_dist_score_lookup[key]
+        return self.dist_score_lookup[key]
 
     def final_score(self, driver):
         key = self.lookup_key()

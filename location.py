@@ -8,10 +8,10 @@ distances_lookup_table = {}
 
 
 def lookup_distance(x1, y1, x2, y2):
-    if distances_lookup_table.get((x1, y1)):
-        return distances_lookup_table[(x1, y1)]
-    if distances_lookup_table.get((x2, y2)):
-        return distances_lookup_table[(x2, y2)]
+    if distances_lookup_table.get((x1, y1, x2, y2)):
+        return distances_lookup_table[(x1, y1, x2, y2)]
+    if distances_lookup_table.get((x2, y2, x1, y1)):
+        return distances_lookup_table[(x2, y2, x1, y1)]
     return None
 
 
@@ -20,7 +20,7 @@ class Location:
         self.x = x
         self.y = y
         self.center_coords = center_coords
-        self.dist_to_center = self.distance_to_center()
+        # self.dist_to_center = self.distance_to_center()
 
     def get_center_coords(self):
         return self.center_coords[0], self.center_coords[1]
@@ -55,8 +55,8 @@ class Location:
             result = gmaps.distance_matrix(origin, destinations)['rows'][0]['elements']
             distances.extend([item['distance']['value']/1000 for item in result])
         for idx, dist in enumerate(distances):
-            coords = locations[idx]
-            distances_lookup_table[coords] = dist
+            x1, y1, x2, y2 = self.x, self.y, locations[idx][0], locations[idx][1]
+            distances_lookup_table[x1, y1, x2, y2] = dist
 
     def google_distance(self, x, y):
         """ Calculate google distance for two points """
@@ -76,9 +76,9 @@ class Location:
         dist = lookup_distance(self.x, self.y, x, y)
         if dist is not None:
             return dist
-        # dist = self.manhattan_distance(x, y)
-        dist = self.google_distance(x, y)
-        distances_lookup_table[(x, y)] = dist
+        dist = self.manhattan_distance(x, y)
+        # dist = self.google_distance(x, y)
+        distances_lookup_table[(self.x, self.y, x, y)] = dist
         return dist
 
     def __str__(self):

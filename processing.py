@@ -1,5 +1,5 @@
 from utils import *
-from location import Location
+from location import Location, distances_lookup_table
 from person import Driver, Student
 from algorithm import stable_student, stable_driver
 from debug_numbers import print_scores_to_file
@@ -10,15 +10,22 @@ from tqdm import tqdm
 import math
 
 
+def print_testing_data(drivers, students):
+    for driver in drivers:
+        print(f'Driver: {driver.get_name()}')
+        for student in students:
+            score = driver.student_dist_score_lookup[student.lookup_key()]
+            print(f'---> Student: {student.get_name()}: {round(score, 3)} ')
+        print("***********************************************************")
+
+
 def populate_dist_lookup_with_google(drivers, students):
-    print("Populating lookup tables with google distances ...")
     center_coords = drivers[0].center_coords
     center_loc = Location(center_coords[0], center_coords[1], center_coords)
     driver_locations = [driver.loc for driver in drivers]
     student_locations = [student.loc for student in students]
     for driver in tqdm(drivers):
         driver.loc.populate_dist_lookup_with_google(student_locations)
-    # finally, populate distances from center to both drivers and students
     center_loc.populate_dist_lookup_with_google(driver_locations)
     center_loc.populate_dist_lookup_with_google(student_locations)
 
@@ -37,8 +44,9 @@ def process_data(drivers_df, students_df, center_coords, consider_gates):
         drivers, students = new_daily_matching(drivers, students, consider_gates, students_df)
     else:
         create_preferences(students, drivers, True, consider_gates, False, False)
+        # print_testing_data(drivers, students)
         drivers, students = apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
-        drivers, students = remove_worst_drivers(drivers, students, consider_gates)
+        # drivers, students = remove_worst_drivers(drivers, students, consider_gates)
     return drivers, students
 
 
