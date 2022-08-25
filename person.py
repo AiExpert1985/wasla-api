@@ -153,7 +153,8 @@ class Driver(Person):
         scores = []
         for i, student in enumerate(students):
             dist = distances[i]
-            scores.append((total_dist - dist) / len_dist)
+            # scores.append((total_dist - dist) / len_dist)
+            scores.append(dist - np.mean(distances))
         # scores = softmax(scores)
         for i, student in enumerate(students):
             key = student.lookup_key()
@@ -384,7 +385,8 @@ class Student(Person):
         scores = []
         for i, driver in enumerate(drivers):
             dist = distances[i]
-            scores.append((total_dist - dist) / len_dist)
+            # scores.append((total_dist - dist) / len_dist)
+            scores.append(dist - np.mean(distances))
         # scores = softmax(scores)
         for i, driver in enumerate(drivers):
             key = driver.lookup_key()
