@@ -12,11 +12,19 @@ import math
 
 def print_testing_data(drivers, students):
     for driver in drivers:
-        print(f'Driver: {driver.get_name()}')
-        for student in students:
-            score = driver.student_dist_score_lookup[student.lookup_key()]
-            print(f'---> Student: {student.get_name()}: {round(score, 3)} ')
-        print("***********************************************************")
+        print('Driver', driver)
+        for student in driver.sorted_by_criterion(students, "student_dist_score"):
+            print(f'{student.get_name()}: {round(driver.student_dist_score(student), 3)}')
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
+    for student in students:
+        print('Student', student)
+        for driver in student.sorted_by_criterion(drivers, "driver_dist_score"):
+            print(f'{driver.get_name()}: {round(student.driver_dist_score(driver), 3)}')
+    print("+++++++++++++++++++++++++++++++++++++++++++++++++++")
+    for driver in drivers:
+        print('Driver', driver)
+        for student in driver.sorted_by_criterion(students, "dist_score"):
+            print(f'{student.get_name()}: {round(driver.dist_score(student), 3)}')
 
 
 def populate_dist_lookup_with_google(drivers, students):
@@ -44,7 +52,7 @@ def process_data(drivers_df, students_df, center_coords, consider_gates):
         drivers, students = new_daily_matching(drivers, students, consider_gates, students_df)
     else:
         create_preferences(students, drivers, True, consider_gates, False, False)
-        # print_testing_data(drivers, students)
+        print_testing_data(drivers, students)
         drivers, students = apply_algorithm(students, drivers, consider_gates, print_to_scores_file=False)
         # drivers, students = remove_worst_drivers(drivers, students, consider_gates)
     return drivers, students

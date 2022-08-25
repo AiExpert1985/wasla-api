@@ -154,7 +154,7 @@ class Driver(Person):
         for i, student in enumerate(students):
             dist = distances[i]
             scores.append((total_dist - dist) / len_dist)
-        scores = softmax(scores)
+        # scores = softmax(scores)
         for i, student in enumerate(students):
             key = student.lookup_key()
             self.student_dist_score_lookup[key] = scores[i]
@@ -307,7 +307,7 @@ class Driver(Person):
         return serialized
 
     def __str__(self):
-        return f"Driver:[<{self.get_location().x},{self.get_location().y}> @ {self.get_name()}]"
+        return f"Driver: {self.get_name()}"
 
 
 class Student(Person):
@@ -315,7 +315,7 @@ class Student(Person):
                  phone, friend_names):
         Person.__init__(self, student_id, loc, center_coords, name, district, phone)
         self.leave_time = str(leave_time)
-        self.dist_score_lookup = {}
+        self.driver_dist_score_lookup = {}
         self.gate_name = gate_group
         self.gate_group = int(gate_group)
         self.driver = None
@@ -326,7 +326,7 @@ class Student(Person):
     def reset_calculations(self, reset_driver_weekly=True):
         self.preferences = []
         self.iterable_preferences = None
-        self.dist_score_lookup = {}
+        self.driver_dist_score_lookup = {}
         self.driver = None
         if reset_driver_weekly:
             self.driver_weekly = {}
@@ -385,14 +385,14 @@ class Student(Person):
         for i, driver in enumerate(drivers):
             dist = distances[i]
             scores.append((total_dist - dist) / len_dist)
-        scores = softmax(scores)
+        # scores = softmax(scores)
         for i, driver in enumerate(drivers):
             key = driver.lookup_key()
-            self.dist_score_lookup[key] = scores[i]
+            self.driver_dist_score_lookup[key] = scores[i]
 
     def driver_dist_score(self, driver):
         key = driver.lookup_key()
-        return self.dist_score_lookup[key]
+        return self.driver_dist_score_lookup[key]
 
     def final_score(self, driver):
         key = self.lookup_key()
@@ -431,4 +431,4 @@ class Student(Person):
         return serialized
 
     def __str__(self):
-        return f"Student: [<{self.get_location().x},{self.get_location().y}> @ {self.get_name()}]"
+        return f"Student: {self.get_name()}"
